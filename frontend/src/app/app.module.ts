@@ -8,12 +8,14 @@ import {CharacterSelectComponent} from "./scenes/characterSelect/characterSelect
 import {AppRoutingModule} from "app/app.routing.module";
 import {NameSelectComponent} from "./scenes/nameSelect/nameSelect.component";
 import {HttpModule} from "@angular/http";
+import {HomeComponent} from "./scenes/home/home.component";
 
 @NgModule({
     declarations: [
         AppComponent,
         CharacterSelectComponent,
-        NameSelectComponent
+        NameSelectComponent,
+        HomeComponent
     ],
     imports: [
         BrowserModule,

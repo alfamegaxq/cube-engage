@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import * as fromRoot from './../../common/index';
 import * as actions from './../../common/actions/character.actions';
+import * as commonActions from './../../common/actions/common.actions';
 import {Character, CharacterTypes} from "../../character/character.model";
 import {Router} from "@angular/router";
 import {CharacterService} from "../../character/character.service";
@@ -40,6 +41,8 @@ export class NameSelectComponent implements OnInit {
             .then((backendCharacter: Character) => {
                 this.store.dispatch(new actions.SelectCharacterColor(backendCharacter.type));
                 this.store.dispatch(new actions.SelectCharacterName(backendCharacter.name));
+                this.store.dispatch(new commonActions.StartGame(null));
+                this.router.navigateByUrl('/home');
             });
     }
 

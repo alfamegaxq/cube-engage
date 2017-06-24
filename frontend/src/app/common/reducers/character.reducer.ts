@@ -1,5 +1,6 @@
 import * as character from '../actions/character.actions';
 import {Character} from '../entities/character';
+import {AbstractAction} from "../actions/abstract.actions";
 
 export interface State {
     character: Character
@@ -9,7 +10,7 @@ const initialState: State = {
     character: new Character()
 };
 
-export function reducer(state = initialState, action: character.AbstractAction): State {
+export function reducer(state = initialState, action: AbstractAction): State {
     switch (action.type) {
         case character.CharacterActionTypes.SELECT_COLOR: {
             return Object.assign(

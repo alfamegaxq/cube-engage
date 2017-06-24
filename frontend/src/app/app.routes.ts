@@ -1,6 +1,7 @@
 import {Routes} from '@angular/router';
 import {CharacterSelectComponent} from "./scenes/characterSelect/characterSelect.component";
 import {NameSelectComponent} from "./scenes/nameSelect/nameSelect.component";
+import {HomeComponent} from "./scenes/home/home.component";
 
 
 export const appRoutes: Routes = [
@@ -9,6 +10,9 @@ export const appRoutes: Routes = [
     },
     {
         path: 'register', component: NameSelectComponent
+    },
+    {
+        path: 'home', component: HomeComponent
     }
     // {
     //     path: '',
