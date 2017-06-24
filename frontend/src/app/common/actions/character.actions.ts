@@ -2,14 +2,24 @@ import {Action} from '@ngrx/store';
 
 /* Layout actions are defined here */
 export const CharacterActionTypes = {
-    SELECT_CHARACTER: '[Character] Select'
+    SELECT_COLOR: '[Character] Select Color',
+    SELECT_NAME: '[Character] Select Name',
 };
 
-export class SelectCharacterAction implements Action {
-    type = CharacterActionTypes.SELECT_CHARACTER;
+export interface AbstractAction extends Action {
+    payload: any;
+}
 
-    constructor(public selection: string, public name: string) {
+export class SelectCharacterColor implements AbstractAction {
+    type = CharacterActionTypes.SELECT_COLOR;
+
+    constructor(public payload: string) {
     }
 }
 
-export type CharacterActions = SelectCharacterAction;
+export class SelectCharacterName implements AbstractAction {
+    type = CharacterActionTypes.SELECT_NAME;
+
+    constructor(public payload: string) {
+    }
+}

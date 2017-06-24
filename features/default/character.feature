@@ -3,7 +3,7 @@ Feature: Character creation
   Given I reseed the database
   Given I have the payload:
   """
-        {"data": {"name": "username", "type": "red"}}
+{"name": "username", "type": "red"}
   """
   When I request "POST" "/api/player"
   Then the response status code should be 200

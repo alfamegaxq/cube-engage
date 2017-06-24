@@ -58,8 +58,7 @@ class FeatureContext implements Context
     {
         $this->payload = json_decode($string->getRaw(), true);
         Assert::assertTrue(json_last_error() == JSON_ERROR_NONE);
-        Assert::assertTrue(array_key_exists('data', $this->payload));
-        Assert::assertTrue(count($this->payload['data']) > 0);
+        Assert::assertTrue(count($this->payload) > 0);
     }
 
     /**

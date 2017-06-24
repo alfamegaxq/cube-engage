@@ -26,12 +26,12 @@ class PlayerController extends FOSRestController
      */
     public function postPlayerAction(Request $request)
     {
-        $data = $request->request->get('data');
         $player = new Player();
-        $player->setType($data['type'])
-            ->setName($data['name']);
+        $player->setType($request->request->get('type'))
+            ->setName($request->request->get('name'));
 
         $this->savePlayer($player);
+
         $serializer = $this->get('serializer');
 
         return new Response($serializer->serialize($player, 'json'));

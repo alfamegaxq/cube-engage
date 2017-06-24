@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Store} from "@ngrx/store";
 import * as fromRoot from './common/index';
+import {CharacterTypes} from "./character/character.model";
 
 @Component({
     selector: 'app-root',
@@ -8,6 +9,7 @@ import * as fromRoot from './common/index';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    title = 'app';
-    constructor(private store: Store<fromRoot.AppState>) {}
+
+    constructor(private store: Store<fromRoot.AppState>) {
+    }
 }

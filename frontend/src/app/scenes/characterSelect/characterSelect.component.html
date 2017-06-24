@@ -1,1 +1,13 @@
-testas
+<div class="container">
+    <div class="row">
+        <h1>PICK YOUR CHAMPIONS COLOR</h1>
+    </div>
+    <div class="row">
+        <div *ngFor="let type of types" class="col selection-item {{type|lowercase}}" (click)="selectCharacter(type)">
+        </div>
+    </div>
+    <div *ngIf="pageValid === false" class="alert alert-danger" role="alert">
+        <strong>Please select a character color</strong>
+    </div>
+    <button (click)="next()" type="button" class="btn btn-success">Continue ></button>
+</div>
