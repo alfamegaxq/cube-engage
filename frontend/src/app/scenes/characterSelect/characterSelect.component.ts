@@ -10,6 +10,6 @@ import * as actions from './../../common/actions/character.actions';
 })
 export class CharacterSelectComponent {
     constructor(private store: Store<fromRoot.AppState>) {
-        this.store.dispatch(new actions.SelectCharacterAction('red'));
+        this.store.dispatch(new actions.SelectCharacterAction('red', 'name'));
     }
 }

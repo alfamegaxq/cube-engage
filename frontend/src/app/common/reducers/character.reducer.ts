@@ -10,12 +10,24 @@ const initialState: State = {
 };
 
 export function reducer(state = initialState, action: character.CharacterActions): State {
-    switch (action.type) { /* Modal cases */
+    switch (action.type) {
         case character.CharacterActionTypes.SELECT_CHARACTER: {
-            return Object.assign({}, state, Object.assign({}, state.character, {type: action.payload}));
+            return Object.assign(
+                {},
+                state,
+                Object.assign(
+                    {},
+                    state.character,
+                    {
+                        type: action.selection,
+                        name: action.name
+                    }
+                )
+            );
         }
         default:
             return state;
     }
 }
+
 export const getCharacterType = (state: State) => state.character.type;

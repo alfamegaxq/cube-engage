@@ -1,3 +1,4 @@
 export class Character {
-    type: string
-};
+    type: string;
+    name: string;
+}

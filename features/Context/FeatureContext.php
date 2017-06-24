@@ -2,25 +2,111 @@
 
 namespace RPGBehat;
 
-use Behat\MinkExtension\Context\RawMinkContext;
+use AppKernel;
+use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Behat\Tester\Exception\PendingException;
+use Doctrine\ORM\Tools\SchemaTool;
+use GuzzleHttp\Client;
 use PHPUnit\Framework\Assert;
+use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext extends RawMinkContext
+class FeatureContext implements Context
 {
+    const URL = 'nginx/app_test.php';
+    /** @var ContainerInterface */
+    private static $container;
+    /** @var array */
+    private $payload;
+    /** @var ResponseInterface */
+    private $response;
+
     /**
-     * @param string $sum
-     *
-     * @Then /Sum should be equals (?P<sum>\d+)/
+     * @BeforeSuite
      */
-    public function thenSumShouldBeEquals($sum)
+    public static function bootstrapSymfony()
     {
-        $response = $this->getSession()->getPage()->getContent();
+        require_once __DIR__ . '/../../vendor/autoload.php';
+        require_once __DIR__ . '/../../app/AppKernel.php';
+        $kernel = new AppKernel('test', true);
+        $kernel->boot();
+        self::$container = $kernel->getContainer();
+    }
 
-        $json = json_decode($response, true);
+    /**
+     * @Given I reseed the database
+     */
+    public function iReseedTheDatabase()
+    {
+        $em = self::$container->get('doctrine')->getManager();
+        $metadata = $em->getMetadataFactory()->getAllMetadata();
+        if (!empty($metadata)) {
+            $tool = new SchemaTool($em);
+            $tool->dropSchema($metadata);
+            $tool->createSchema($metadata);
+        }
+    }
 
-        Assert::assertEquals($sum, $json['sum']);
+    /**
+     * @Given I have the payload:
+     */
+    public function iHaveThePayload(PyStringNode $string)
+    {
+        $this->payload = json_decode($string->getRaw(), true);
+        Assert::assertTrue(json_last_error() == JSON_ERROR_NONE);
+        Assert::assertTrue(array_key_exists('data', $this->payload));
+        Assert::assertTrue(count($this->payload['data']) > 0);
+    }
+
+    /**
+     * @When I request :httpMethod :resource
+     */
+    public function iRequest(string $httpMethod, string $resource)
+    {
+        $method = strtolower($httpMethod);
+        $client = new Client();
+        $this->response = $client->request(
+            $method,
+            self::URL . $resource,
+            [
+                'form_params' => $this->payload
+            ]
+        );
+    }
+
+    /**
+     * @Then /^the response status code should be (\d+)$/
+     */
+    public function theResponseStatusCodeShouldBe(string $httpStatus)
+    {
+        if ((string)$this->response->getStatusCode() !== $httpStatus) {
+            throw new \Exception('HTTP code does not match ' . $httpStatus .
+                ' (actual: ' . $this->response->getStatusCode() . ')');
+        }
+    }
+
+    /**
+     * @Then there are :totalRows rows in :entity
+     */
+    public function thereAreRowsInDatabaseTable(int $totalRows, string $entity)
+    {
+        $repository = self::$container->get('doctrine')->getManager()->getRepository('RPGBundle:' . $entity);
+        Assert::assertTrue(count($repository->findAll()) === $totalRows);
+    }
+
+    /**
+     * @Then table row is:
+     */
+    public function tableRowIs(PyStringNode $string)
+    {
+        $repository = self::$container->get('doctrine')->getManager()->getRepository('RPGBundle:Player');
+        $player = $repository->findAll()[0];
+
+        $serialized = self::$container->get('serializer')->serialize($player, 'json');
+        Assert::assertEquals($string->getRaw(), $serialized);
     }
 }

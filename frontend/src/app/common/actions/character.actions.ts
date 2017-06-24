@@ -8,7 +8,7 @@ export const CharacterActionTypes = {
 export class SelectCharacterAction implements Action {
     type = CharacterActionTypes.SELECT_CHARACTER;
 
-    constructor(public payload: string) {
+    constructor(public selection: string, public name: string) {
     }
 }
 
