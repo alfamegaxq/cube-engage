@@ -6,6 +6,7 @@ import {Character, CharacterTypes} from "../../character/character.model";
 import {Observable} from "rxjs/Observable";
 import {AppState} from "../../common/index";
 import {Router} from "@angular/router";
+import {State} from "../../common/reducers/character.reducer";
 
 @Component({
     selector: 'scene-character-select',
@@ -18,8 +19,8 @@ export class CharacterSelectComponent {
 
     constructor(private store: Store<fromRoot.AppState>, private router:Router) {
         this.types = CharacterTypes;
-        this.store.select('character').subscribe((state: Character) => {
-            if (state.type) {
+        this.store.select('character').subscribe((state: State) => {
+            if (state.character.type) {
                 this.pageValid = true;
             }
         });

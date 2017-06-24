@@ -1,42 +1,27 @@
 import * as character from '../actions/character.actions';
 import {Character} from '../entities/character';
 import {AbstractAction} from "../actions/abstract.actions";
+import {Stats} from "../entities/stats";
 
 export interface State {
     character: Character
+    stats: Stats
 }
 
 const initialState: State = {
-    character: new Character()
+    character: new Character(),
+    stats: new Stats()
 };
 
 export function reducer(state = initialState, action: AbstractAction): State {
     switch (action.type) {
         case character.CharacterActionTypes.SELECT_COLOR: {
-            return Object.assign(
-                {},
-                state,
-                Object.assign(
-                    {},
-                    state.character,
-                    {
-                        type: action.payload
-                    }
-                )
-            );
+            let newCharacter = Object.assign({}, state.character, {type: action.payload});
+            return Object.assign({}, state, {character: newCharacter});
         }
         case character.CharacterActionTypes.SELECT_NAME: {
-            return Object.assign(
-                {},
-                state,
-                Object.assign(
-                    {},
-                    state.character,
-                    {
-                        name: action.payload
-                    }
-                )
-            );
+            let newCharacter = Object.assign({}, state.character, {name: action.payload});
+            return Object.assign({}, state, {character: newCharacter});
         }
         default:
             return state;

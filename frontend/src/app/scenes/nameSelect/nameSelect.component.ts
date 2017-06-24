@@ -6,6 +6,7 @@ import * as commonActions from './../../common/actions/common.actions';
 import {Character, CharacterTypes} from "../../character/character.model";
 import {Router} from "@angular/router";
 import {CharacterService} from "../../character/character.service";
+import {State} from "../../common/reducers/character.reducer";
 
 @Component({
     selector: 'scene-name-select',
@@ -23,15 +24,17 @@ export class NameSelectComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.store.select('character').subscribe((state: Character) => {
-            if (!state.type) {
+        this.store.select('character').subscribe((state: State) => {
+
+            if (!state.character.type) {
                 this.router.navigateByUrl('/');
             }
-            this.type = state.type;
+
+            this.type = state.character.type;
         });
     }
 
-    setName(event: any): void { // without type info
+    setName(event: any): void {
         this.name = event.target.value;
     }
 
