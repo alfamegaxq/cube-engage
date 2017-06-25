@@ -6,14 +6,15 @@ import {BaseApi} from "../../api/base";
 import {Map} from "./map.model";
 import {Character} from "../common/entities/character";
 import {Stats} from "../common/entities/stats";
+import {CookieService} from "ng2-cookies";
 
 @Injectable()
 export class MapService extends BaseApi {
 
-    protected getUrl = '/api/map';
+    protected getUrl = '/api/secure/map';
 
-    constructor(protected http: Http) {
-        super(http);
+    constructor(protected http: Http, protected cookies: CookieService) {
+        super(http, cookies);
     }
 
     getMap(stats: Stats): Promise<Map> {

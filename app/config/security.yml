@@ -4,8 +4,8 @@ security:
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        api_key_user_provider:
+            id: api_key_user_provider
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -15,6 +15,11 @@ security:
 
         main:
             anonymous: ~
+            pattern: ^/api/secure
+            stateless: false
+            simple_preauth:
+                authenticator: api_key_authenticator
+            provider: api_key_user_provider
             # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
@@ -22,3 +27,5 @@ security:
 
             # https://symfony.com/doc/current/security/form_login_setup.html
             #form_login: ~
+    access_control:
+        - { path: ^/api/secure, roles: ROLE_API }

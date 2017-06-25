@@ -33,9 +33,16 @@ class Player
     /**
      * @var string
      *
-     * @ORM\Column(name="anme", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="token", type="string", length=255)
+     */
+    private $token;
 
     public function getId(): ?int
     {
@@ -62,6 +69,18 @@ class Player
     public function setName(string $name): Player
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): Player
+    {
+        $this->token = $token;
 
         return $this;
     }

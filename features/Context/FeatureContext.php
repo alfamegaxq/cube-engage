@@ -10,6 +10,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
+use RPGBundle\Entity\Player;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -72,7 +73,10 @@ class FeatureContext implements Context
             $method,
             self::URL . $resource,
             [
-                'form_params' => $this->payload
+                'form_params' => $this->payload,
+                'headers' => [
+                    'apiKey' => '123'
+                ]
             ]
         );
     }
@@ -103,10 +107,14 @@ class FeatureContext implements Context
     public function tableRowIs(PyStringNode $string)
     {
         $repository = self::$container->get('doctrine')->getManager()->getRepository('RPGBundle:Player');
+        /** @var Player $player */
         $player = $repository->findAll()[0];
 
-        $serialized = self::$container->get('serializer')->serialize($player, 'json');
-        Assert::assertEquals($string->getRaw(), $serialized);
+        $expected = json_decode($string->getRaw(), true);
+        Assert::assertEquals($expected['id'], $player->getId());
+        Assert::assertEquals($expected['name'], $player->getName());
+        Assert::assertEquals($expected['type'], $player->getType());
+        Assert::assertNotNull($player->getToken());
     }
 
     /**
@@ -121,6 +129,24 @@ class FeatureContext implements Context
             foreach ($row as $cell) {
                 Assert::assertTrue($cell >= 1 && $cell <= $columns);
             }
+        }
+    }
+
+    /**
+     * @When I am a test user
+     */
+    public function iAmATestUser()
+    {
+        $em = self::$container->get('doctrine')->getManager();
+        $repository = $em->getRepository('RPGBundle:Player');
+        if (!$repository->findBy(['token' => '123'])) {
+            $player = new Player();
+            $player->setName('test')
+                ->setType('test')
+                ->setToken('123');
+
+            $em->persist($player);
+            $em->flush();
         }
     }
 }

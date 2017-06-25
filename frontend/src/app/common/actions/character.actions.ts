@@ -4,7 +4,7 @@ import {AbstractAction} from "./abstract.actions";
 /* Layout actions are defined here */
 export const CharacterActionTypes = {
     SELECT_COLOR: '[Character] Select Color',
-    SELECT_NAME: '[Character] Select Name',
+    SELECT_NAME: '[Character] Select Name'
 };
 
 export class SelectCharacterColor implements AbstractAction {

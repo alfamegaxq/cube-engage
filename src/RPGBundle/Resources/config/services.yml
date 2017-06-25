@@ -1,4 +1,10 @@
 services:
+    api_key_user_provider:
+      class: RPGBundle\Security\ApiKeyUserProvider
+      autowire: true
+
+    api_key_authenticator:
+      class: RPGBundle\Security\ApiKeyAuthenticator
 
     rpg.example.sum:
       class: RPGBundle\Service\SumService

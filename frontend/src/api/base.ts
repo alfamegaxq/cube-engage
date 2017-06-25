@@ -1,9 +1,10 @@
-import {Http, Response} from "@angular/http";
+import {Headers, Http, Response} from "@angular/http";
+import {CookieService} from "ng2-cookies";
 
 export abstract class BaseApi {
     protected apiUrl = 'http://challenge.dev:8001';
 
-    constructor(protected http: Http) {
+    constructor(protected http: Http, protected cookies: CookieService) {
     }
 
     protected post<T>(url: string, payload: Object): Promise<T> {
@@ -14,13 +15,21 @@ export abstract class BaseApi {
             }
         }
 
-        return this.http.post(this.apiUrl + url, body)
+        let headers = new Headers();
+        headers.append('X-Api-Token', this.cookies.get('apiToken'));
+        headers.append('Access-Control-Allow-Credentials', 'true');
+
+        return this.http.post(this.apiUrl + url, body, {withCredentials: true, headers: headers})
             .toPromise()
             .then((response: Response) => response.json() as T);
     }
 
     protected get<T>(url: string): Promise<T> {
-        return this.http.get(this.apiUrl + url)
+        let headers = new Headers();
+        headers.append('X-Api-Token', this.cookies.get('apiToken'));
+        headers.append('Access-Control-Allow-Credentials', 'true');
+
+        return this.http.get(this.apiUrl + url, {withCredentials: true, headers: headers})
             .toPromise()
             .then((response: Response) => response.json() as T);
     }

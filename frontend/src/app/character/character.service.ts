@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Character} from "./character.model";
-import {Http, Response} from "@angular/http";
+import {Http} from "@angular/http";
+import {CookieService} from "ng2-cookies";
 
 import 'rxjs/add/operator/toPromise';
 import {BaseApi} from "../../api/base";
@@ -10,8 +11,8 @@ export class CharacterService extends BaseApi {
 
     protected createUrl = '/api/player';
 
-    constructor(protected http: Http) {
-        super(http);
+    constructor(protected http: Http, protected cookies: CookieService) {
+        super(http, cookies);
     }
 
     createCharacter(character: Character): Promise<Character> {

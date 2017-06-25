@@ -11,11 +11,10 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 
 class PlayerController extends FOSRestController
 {
-
     /**
      * @Rest\Get("/player")
      */
-    public function getPlayerAction()
+    public function getPlayerAction(Request $req)
     {
         return new JsonResponse(['a']);
     }
@@ -26,7 +25,8 @@ class PlayerController extends FOSRestController
     {
         $player = new Player();
         $player->setType($request->request->get('type'))
-            ->setName($request->request->get('name'));
+            ->setName($request->request->get('name'))
+            ->setToken(md5(uniqid()));
 
         $this->savePlayer($player);
 

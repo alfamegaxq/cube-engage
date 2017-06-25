@@ -7,12 +7,13 @@ import {Character, CharacterTypes} from "../../character/character.model";
 import {Router} from "@angular/router";
 import {CharacterService} from "../../character/character.service";
 import {State} from "../../common/reducers/character.reducer";
+import {CookieService} from 'ng2-cookies';
 
 @Component({
     selector: 'scene-name-select',
     templateUrl: './nameSelect.component.html',
     styleUrls: ['./nameSelect.component.css'],
-    providers: [CharacterService]
+    providers: [CharacterService, CookieService]
 })
 export class NameSelectComponent implements OnInit {
     name: string;
@@ -21,7 +22,8 @@ export class NameSelectComponent implements OnInit {
 
     constructor(private store: Store<fromRoot.AppState>,
                 private router: Router,
-                private characterService: CharacterService) {
+                private characterService: CharacterService,
+                private cookies: CookieService) {
     }
 
     ngOnInit(): void {
@@ -46,13 +48,16 @@ export class NameSelectComponent implements OnInit {
         }
     }
 
-    private dispatchCharacterDetails()
-    {
+    private dispatchCharacterDetails() {
         this.characterService.createCharacter(this.createCharacter())
             .then((backendCharacter: Character) => {
                 this.store.dispatch(new actions.SelectCharacterColor(backendCharacter.type));
                 this.store.dispatch(new actions.SelectCharacterName(backendCharacter.name));
+                this.store.dispatch(new commonActions.SetApiToken(backendCharacter.token));
                 this.store.dispatch(new commonActions.StartGame(null));
+
+                this.cookies.set('apiToken', backendCharacter.token);
+
                 this.router.navigateByUrl('/home');
             });
     }
