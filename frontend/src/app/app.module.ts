@@ -10,6 +10,7 @@ import {NameSelectComponent} from "./scenes/nameSelect/nameSelect.component";
 import {HttpModule} from "@angular/http";
 import {HomeComponent} from "./scenes/home/home.component";
 import {StatsComponent} from "./character/stats/stats.component";
+import {WelcomeComponent} from "./scenes/home/welcome/welcome.component";
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import {StatsComponent} from "./character/stats/stats.component";
         CharacterSelectComponent,
         NameSelectComponent,
         HomeComponent,
-        StatsComponent
+        StatsComponent,
+        WelcomeComponent
     ],
     imports: [
         BrowserModule,

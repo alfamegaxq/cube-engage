@@ -17,6 +17,7 @@ import {State} from "../../common/reducers/character.reducer";
 export class NameSelectComponent implements OnInit {
     name: string;
     type: string;
+    nextClicked: boolean;
 
     constructor(private store: Store<fromRoot.AppState>,
                 private router: Router,
@@ -39,7 +40,14 @@ export class NameSelectComponent implements OnInit {
     }
 
     next(): void {
-        //@TODO do validation
+        this.nextClicked = true;
+        if (this.name.length > 2) {
+            this.dispatchCharacterDetails();
+        }
+    }
+
+    private dispatchCharacterDetails()
+    {
         this.characterService.createCharacter(this.createCharacter())
             .then((backendCharacter: Character) => {
                 this.store.dispatch(new actions.SelectCharacterColor(backendCharacter.type));

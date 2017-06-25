@@ -1,1 +1,12 @@
-<router-outlet></router-outlet>
+<router-outlet>
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <router-outlet name="game-stats"></router-outlet>
+            </div>
+            <div class="col-8">
+                <router-outlet name="game-screen"></router-outlet>
+            </div>
+        </div>
+    </div>
+</router-outlet>

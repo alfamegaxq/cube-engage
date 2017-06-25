@@ -6,7 +6,14 @@
         <label>
             <input (keyup)="setName($event)" type="text" name="username">
         </label>
-        <br>
+    </div>
+    <div class="row">
+        <div *ngIf="(name === undefined || name.length < 2) && nextClicked === true" class="alert alert-danger"
+             role="alert">
+            <strong>Name should be at least 3 symbols length</strong>
+        </div>
+    </div>
+    <div class="row">
         <button (click)="next()" type="button" class="btn btn-success">Continue ></button>
     </div>
 </div>
