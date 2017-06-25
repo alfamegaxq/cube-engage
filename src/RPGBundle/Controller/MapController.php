@@ -15,12 +15,27 @@ class MapController extends FOSRestController
     public function getMapAction(Request $request, int $level)
     {
         $mapService = $this->get('map.service');
-//        $request->getSession()->set('a', 'b');
+
         if (!($map = $request->getSession()->get('map'))) {
-            $map = $mapService->generateMap(6);
+            $map = $mapService->generateMap($level);
             $request->getSession()->set('map', $map);
         }
 
+        return new JsonResponse($map);
+    }
+
+    /**
+     * @Rest\Get("/secure/map/click/{row}/{column}", requirements={"row" = "\d+", "column" = "\d+"})
+     */
+    public function getMapClickAction(Request $request, int $row, int $column)
+    {
+        $map = $request->getSession()->get('map');
+
+        if (isset($map[$row][$column]) && $map[$row][$column] != 0) {
+            $map[$row][$column] -= 1;
+        }
+
+        $request->getSession()->set('map', $map);
         return new JsonResponse($map);
     }
 }

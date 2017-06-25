@@ -1,7 +1,7 @@
 Click on cells and try to kill half of the enemy cards. Beware that the higher level you have, the stronger cards will be.
 <table>
-    <tr *ngFor="let row of map">
-        <td *ngFor="let cell of row">
+    <tr *ngFor="let row of map; let i = index">
+        <td *ngFor="let cell of row; let j = index" (click)="cellClick(i, j)">
             {{cell}}
         </td>
     </tr>

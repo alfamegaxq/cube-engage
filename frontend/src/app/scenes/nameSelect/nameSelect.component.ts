@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
 import {CharacterService} from "../../character/character.service";
 import {State} from "../../common/reducers/character.reducer";
 import {CookieService} from 'ng2-cookies';
+import {Stats} from "../../common/entities/stats";
 
 @Component({
     selector: 'scene-name-select',
@@ -54,11 +55,22 @@ export class NameSelectComponent implements OnInit {
                 this.store.dispatch(new actions.SelectCharacterColor(backendCharacter.type));
                 this.store.dispatch(new actions.SelectCharacterName(backendCharacter.name));
                 this.store.dispatch(new commonActions.SetApiToken(backendCharacter.token));
+
+                this.getCharacterStats(backendCharacter);
+
                 this.store.dispatch(new commonActions.StartGame(null));
 
                 this.cookies.set('apiToken', backendCharacter.token);
 
                 this.router.navigateByUrl('/home');
+            });
+    }
+
+    private getCharacterStats(character: Character)
+    {
+        this.characterService.getCharacter(character)
+            .then((stats: Stats) => {
+               this.store.dispatch(new actions.SetCharacterStatus(stats));
             });
     }
 

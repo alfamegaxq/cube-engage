@@ -75,10 +75,11 @@ class FeatureContext implements Context
             [
                 'form_params' => $this->payload,
                 'headers' => [
-                    'apiKey' => '123'
+                    'X-Api-Token' => '123'
                 ]
             ]
         );
+
     }
 
     /**
@@ -133,7 +134,7 @@ class FeatureContext implements Context
     }
 
     /**
-     * @When I am a test user
+     * @Given I am a test user
      */
     public function iAmATestUser()
     {
@@ -148,5 +149,15 @@ class FeatureContext implements Context
             $em->persist($player);
             $em->flush();
         }
+    }
+
+    /**
+     * @Given /^it should return:$/
+     */
+    public function itShouldReturn(PyStringNode $string)
+    {
+        $data = $this->response->getBody()->getContents();
+
+        Assert::assertJsonStringEqualsJsonString($string->getRaw(), $data);
     }
 }

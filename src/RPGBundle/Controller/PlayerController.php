@@ -12,16 +12,17 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 class PlayerController extends FOSRestController
 {
     /**
-     * @Rest\Get("/player")
+     * @Rest\Get("/ping")
      */
-    public function getPlayerAction(Request $req)
+    public function getPingAction(Request $req): JsonResponse
     {
-        return new JsonResponse(['a']);
+        return new JsonResponse(['pong']);
     }
+
     /**
      * @Rest\Post("/player")
      */
-    public function postPlayerAction(Request $request)
+    public function postPlayerAction(Request $request): Response
     {
         $player = new Player();
         $player->setType($request->request->get('type'))
@@ -40,5 +41,16 @@ class PlayerController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $em->persist($player);
         $em->flush();
+    }
+
+    /**
+     * @Rest\Get("/player/{token}")
+     */
+    public function getPlayer(string $token): Response
+    {
+        $player = $this->getDoctrine()->getRepository('RPGBundle:Player')->findOneBy(['token' => $token]);
+        $serializer = $this->get('serializer');
+
+        return new Response($serializer->serialize($player, 'json'));
     }
 }

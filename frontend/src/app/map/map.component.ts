@@ -25,4 +25,10 @@ export class MapComponent implements OnInit {
             });
         });
     }
+
+    cellClick(row: number, col: number) {
+        this.mapService.clickTile({row: row, col: col}).then((map: Map) => {
+            this.map = map;
+        });
+    }
 }

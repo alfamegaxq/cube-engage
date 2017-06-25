@@ -23,6 +23,10 @@ export function reducer(state = initialState, action: AbstractAction): State {
             let newCharacter = Object.assign({}, state.character, {name: action.payload});
             return Object.assign({}, state, {character: newCharacter});
         }
+        case character.CharacterActionTypes.SET_STATS: {
+            let newCharacter = Object.assign({}, state.stats, action.payload);
+            return Object.assign({}, state, {character: newCharacter});
+        }
         default:
             return state;
     }
