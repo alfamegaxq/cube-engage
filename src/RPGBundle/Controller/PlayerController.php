@@ -2,9 +2,7 @@
 
 namespace RPGBundle\Controller;
 
-use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\FOSRestController;
-use GuzzleHttp\Client;
 use RPGBundle\Entity\Player;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

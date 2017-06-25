@@ -108,4 +108,19 @@ class FeatureContext implements Context
         $serialized = self::$container->get('serializer')->serialize($player, 'json');
         Assert::assertEquals($string->getRaw(), $serialized);
     }
+
+    /**
+     * @Then there should be 2d json with :rows rows and :columns columns with cells of numbers
+     */
+    public function thereShouldBeDJsonWithRowsAndColumnsWithCellsOfNumbers(int $rows, int $columns)
+    {
+        $content = json_decode($this->response->getBody()->getContents());
+        Assert::assertEquals($rows, count($content));
+        foreach ($content as $row) {
+            Assert::assertEquals($columns, count($row));
+            foreach ($row as $cell) {
+                Assert::assertTrue($cell >= 1 && $cell <= $columns);
+            }
+        }
+    }
 }

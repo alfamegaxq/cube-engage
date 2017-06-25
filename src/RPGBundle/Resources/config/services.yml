@@ -3,10 +3,6 @@ services:
     rpg.example.sum:
       class: RPGBundle\Service\SumService
 
-    default_controller:
-      class: RPGBundle\Controller\DefaultController
-      autowire: true
-
     player_controller:
       class: RPGBundle\Controller\PlayerController
       autowire: true
@@ -16,6 +12,8 @@ services:
       tags:
         - {name: console.command}
 
-
     player.service:
         class: RPGBundle\Service\PlayerService
+
+    map.service:
+        class: RPGBundle\Service\MapService
