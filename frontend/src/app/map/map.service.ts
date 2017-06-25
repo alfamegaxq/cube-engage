@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import {BaseApi} from "../../api/base";
 import {Map} from "./map.model";
 import {Character} from "../common/entities/character";
+import {Stats} from "../common/entities/stats";
 
 @Injectable()
 export class MapService extends BaseApi {
@@ -15,7 +16,7 @@ export class MapService extends BaseApi {
         super(http);
     }
 
-    getMap(character: Character): Promise<Map> {
-        return this.get<Map>(this.getUrl, character);
+    getMap(stats: Stats): Promise<Map> {
+        return this.get<Map>(this.getUrl + '/' + stats.level);
     }
 }
