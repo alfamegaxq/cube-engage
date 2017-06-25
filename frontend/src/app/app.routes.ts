@@ -3,6 +3,7 @@ import {CharacterSelectComponent} from "./scenes/characterSelect/characterSelect
 import {NameSelectComponent} from "./scenes/nameSelect/nameSelect.component";
 import {HomeComponent} from "./scenes/home/home.component";
 import {WelcomeComponent} from "./scenes/home/welcome/welcome.component";
+import {MapComponent} from "./scenes/map/map.component";
 
 
 export const appRoutes: Routes = [
@@ -16,7 +17,8 @@ export const appRoutes: Routes = [
         path: 'home',
         children: [
             {path: '', component: HomeComponent, outlet: 'game-stats'},
-            {path: '', component: WelcomeComponent, outlet: 'game-screen'}
+            {path: '', component: WelcomeComponent, outlet: 'game-screen'},
+            {path: 'explore', component: MapComponent, outlet: 'game-screen'}
         ]
     }
 ];

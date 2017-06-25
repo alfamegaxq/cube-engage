@@ -18,4 +18,17 @@ export abstract class BaseApi {
             .toPromise()
             .then((response: Response) => response.json() as T);
     }
+
+    protected get<T>(url: string, payload: Object): Promise<T> {
+        let body = new FormData();
+        for (let property in payload) {
+            if (payload.hasOwnProperty(property)) {
+                body.append(property, payload[property]);
+            }
+        }
+
+        return this.http.get(this.apiUrl + url, body)
+            .toPromise()
+            .then((response: Response) => response.json() as T);
+    }
 }

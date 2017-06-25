@@ -6,7 +6,8 @@
         <a href="#" class="list-group-item active">
             Home
         </a>
-        <a href="#" class="list-group-item list-group-item-action">Explore</a>
+
+        <a [routerLink]="['/home', {outlets: {'game-screen': ['explore']}}]" routerLinkActive="active" class="list-group-item list-group-item-action">Explore</a>
         <a href="#" class="list-group-item list-group-item-action">Level up</a>
         <a href="#" class="list-group-item list-group-item-action">Exit</a>
     </div>

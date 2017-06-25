@@ -11,6 +11,8 @@ import {HttpModule} from "@angular/http";
 import {HomeComponent} from "./scenes/home/home.component";
 import {StatsComponent} from "./character/stats/stats.component";
 import {WelcomeComponent} from "./scenes/home/welcome/welcome.component";
+import {MapComponent as MapSceneComponent} from "./scenes/map/map.component";
+import {MapComponent} from "./map/map.component";
 
 @NgModule({
     declarations: [
@@ -19,7 +21,9 @@ import {WelcomeComponent} from "./scenes/home/welcome/welcome.component";
         NameSelectComponent,
         HomeComponent,
         StatsComponent,
-        WelcomeComponent
+        WelcomeComponent,
+        MapSceneComponent,
+        MapComponent
     ],
     imports: [
         BrowserModule,

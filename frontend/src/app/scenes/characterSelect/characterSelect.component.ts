@@ -1,10 +1,8 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {Store} from "@ngrx/store";
 import * as fromRoot from './../../common/index';
 import * as actions from './../../common/actions/character.actions';
-import {Character, CharacterTypes} from "../../character/character.model";
-import {Observable} from "rxjs/Observable";
-import {AppState} from "../../common/index";
+import {CharacterTypes} from "../../character/character.model";
 import {Router} from "@angular/router";
 import {State} from "../../common/reducers/character.reducer";
 
