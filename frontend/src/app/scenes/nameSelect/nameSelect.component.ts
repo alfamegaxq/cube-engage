@@ -49,7 +49,7 @@ export class NameSelectComponent implements OnInit {
         }
     }
 
-    private dispatchCharacterDetails() {
+    private dispatchCharacterDetails(): void {
         this.characterService.createCharacter(this.createCharacter())
             .then((backendCharacter: Character) => {
                 this.store.dispatch(new actions.SelectCharacterColor(backendCharacter.type));
@@ -59,18 +59,15 @@ export class NameSelectComponent implements OnInit {
                 this.getCharacterStats(backendCharacter);
 
                 this.store.dispatch(new commonActions.StartGame(null));
-
                 this.cookies.set('apiToken', backendCharacter.token);
-
                 this.router.navigateByUrl('/home');
             });
     }
 
-    private getCharacterStats(character: Character)
-    {
+    private getCharacterStats(character: Character): void {
         this.characterService.getCharacter(character)
             .then((stats: Stats) => {
-               this.store.dispatch(new actions.SetCharacterStatus(stats));
+                this.store.dispatch(new actions.SetCharacterStatus(stats));
             });
     }
 
