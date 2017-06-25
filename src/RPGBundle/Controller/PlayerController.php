@@ -30,13 +30,14 @@ class PlayerController extends FOSRestController
             ->setToken(md5(uniqid()));
 
         $this->savePlayer($player);
+        $request->getSession()->set('apiToken', $player->getToken());
 
         $serializer = $this->get('serializer');
 
         return new Response($serializer->serialize($player, 'json'));
     }
 
-    private function savePlayer($player): void
+    private function savePlayer(Player $player): void
     {
         $em = $this->getDoctrine()->getManager();
         $em->persist($player);

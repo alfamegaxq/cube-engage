@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import * as fromRoot from './../../common/index';
 import * as actions from './../../common/actions/character.actions';
 import * as commonActions from './../../common/actions/common.actions';
-import {Character, CharacterTypes} from "../../character/character.model";
+import {Character} from "../../character/character.model";
 import {Router} from "@angular/router";
 import {CharacterService} from "../../character/character.service";
 import {State} from "../../common/reducers/character.reducer";
@@ -65,7 +65,7 @@ export class NameSelectComponent implements OnInit {
     }
 
     private getCharacterStats(character: Character): void {
-        this.characterService.getCharacter(character)
+        this.characterService.getStats(character.token)
             .then((stats: Stats) => {
                 this.store.dispatch(new actions.SetCharacterStatus(stats));
             });

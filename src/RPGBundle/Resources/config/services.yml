@@ -20,6 +20,7 @@ services:
 
     player.service:
         class: RPGBundle\Service\PlayerService
+        autowire: true
 
     map.service:
         class: RPGBundle\Service\MapService
@@ -27,10 +28,12 @@ services:
 
     map.destroyed_tile.event_listener:
         class: RPGBundle\EventListener\MapTileDestroyedEventListener
+        autowire: true
         tags:
             - { name: kernel.event_listener, event: map.tile.destroyed, method: onTileDestroyed }
 
     map.all_tiles_destroyed.event_listener:
         class: RPGBundle\EventListener\MapAllTilesDestroyedEventListener
+        autowire: true
         tags:
             - { name: kernel.event_listener, event: map.destroyed, method: onAllTilesDestroyed }

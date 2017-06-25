@@ -4,7 +4,7 @@ namespace RPGBundle\EventListener;
 
 class MapAllTilesDestroyedEventListener
 {
-    public function onAllTilesDestroyed()
+    public function onAllTilesDestroyed(): void
     {
 
     }

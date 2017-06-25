@@ -24,13 +24,10 @@ export function reducer(state = initialState, action: AbstractAction): State {
             return Object.assign({}, state, {character: newCharacter});
         }
         case character.CharacterActionTypes.SET_STATS: {
-            let newCharacter = Object.assign({}, state.stats, action.payload);
-            return Object.assign({}, state, {character: newCharacter});
+            let newStats = Object.assign({}, state.stats, action.payload);
+            return Object.assign({}, state, {stats: newStats});
         }
         default:
             return state;
     }
 }
-
-export const getCharacterType = (state: State) => state.character.type;
-export const getCharacterName = (state: State) => state.character.name;

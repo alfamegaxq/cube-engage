@@ -151,6 +151,13 @@ class Player
         return $this;
     }
 
+    public function addXp(int $xp): Player
+    {
+        $this->xp += $xp;
+
+        return $this;
+    }
+
     public function getScore(): int
     {
         return $this->score;

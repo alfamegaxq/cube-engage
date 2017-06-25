@@ -21,5 +21,3 @@ export function metaReducer(state: any, action: any) {
 }
 
 export const getCharacterState = (state: AppState) => state.character;
-// export const getCharacterColor = createSelector(getCharacterState , fromCharacter.getCharacterType);
-// export const getCharacterName = createSelector(getCharacterState , fromCharacter.getCharacterName);

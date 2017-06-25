@@ -21,7 +21,7 @@ export class CharacterService extends BaseApi {
         return this.post<Character>(this.createUrl, character);
     }
 
-    getCharacter(character: Character): Promise<Stats> {
-        return this.get<Stats>(`${this.characterStatsUrl}/${character.token}`);
+    getStats(token: string): Promise<Stats> {
+        return this.get<Stats>(`${this.characterStatsUrl}/${token}`);
     }
 }
