@@ -31,9 +31,8 @@ class MapController extends FOSRestController
     {
         $map = $request->getSession()->get('map');
 
-        if (isset($map[$row][$column]) && $map[$row][$column] != 0) {
-            $map[$row][$column] -= 1;
-        }
+        $mapService = $this->get('map.service');
+        $map = $mapService->hitTile($map, $row, $column);
 
         $request->getSession()->set('map', $map);
         return new JsonResponse($map);

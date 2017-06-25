@@ -23,3 +23,14 @@ services:
 
     map.service:
         class: RPGBundle\Service\MapService
+        autowire: true
+
+    map.destroyed_tile.event_listener:
+        class: RPGBundle\EventListener\MapTileDestroyedEventListener
+        tags:
+            - { name: kernel.event_listener, event: map.tile.destroyed, method: onTileDestroyed }
+
+    map.all_tiles_destroyed.event_listener:
+        class: RPGBundle\EventListener\MapAllTilesDestroyedEventListener
+        tags:
+            - { name: kernel.event_listener, event: map.destroyed, method: onAllTilesDestroyed }
