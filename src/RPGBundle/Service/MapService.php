@@ -2,9 +2,9 @@
 
 namespace RPGBundle\Service;
 
+use Doctrine\ORM\EntityManager;
 use InvalidArgumentException;
 use RPGBundle\Entity\Player;
-use RPGBundle\Event\MapAlltilesDestroyed;
 use RPGBundle\Event\MapAllTilesDestroyedEvent;
 use RPGBundle\Event\MapTileDestroyedEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -15,11 +15,17 @@ class MapService
     private $dispatcher;
     /** @var PlayerService */
     private $playerService;
+    /** @var EntityManager */
+    private $em;
 
-    public function __construct(EventDispatcher $dispatcher, PlayerService $playerService)
-    {
+    public function __construct(
+        EventDispatcher $dispatcher,
+        PlayerService $playerService,
+        EntityManager $em
+    ) {
         $this->dispatcher = $dispatcher;
         $this->playerService = $playerService;
+        $this->em = $em;
     }
 
     public function generateMap(int $level): array
@@ -32,7 +38,7 @@ class MapService
         for ($i = 0; $i < $level; $i++) {
             $row = [];
             for ($j = 0; $j < $level; $j++) {
-                $row[] = rand(1, $level);
+                $row[] = rand(1, $level * 2);
             }
             $map[] = $row;
         }
@@ -45,9 +51,13 @@ class MapService
         if (isset($map[$row][$column]) && $map[$row][$column] != 0) {
             $player = $this->playerService->getActivePlayer();
             $map = $this->reduceCellHealth($map, $row, $column, $player);
+            $player->getHit($map[$row][$column]);
             $this->checkIfTileDestroyed($map, $row, $column);
             $count = $this->countZerosInMap($map);
             $this->checkIfMapDestroyed($map, $count);
+
+            $this->em->persist($player);
+            $this->em->flush();
         }
 
         return $map;

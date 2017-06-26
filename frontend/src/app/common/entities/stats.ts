@@ -4,8 +4,8 @@ export class Stats {
     nextLevelXpNeeded = 1000;
     score = 0;
     multiplier = 1;
-    health= 10;
-    maxHealth= 10;
+    health = 10;
+    maxHealth = 10;
     attackPoints = 1;
     skillPoints = 0;
 }

@@ -216,6 +216,11 @@ class Player
         return $this;
     }
 
+    public function getHit(int $damage): void
+    {
+        $this->health -= $damage;
+    }
+
     public function getAttackPoints(): int
     {
         return $this->attackPoints;
