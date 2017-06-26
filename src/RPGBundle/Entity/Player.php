@@ -90,6 +90,13 @@ class Player
     /**
      * @var int
      *
+     * @ORM\Column(name="max_health", type="integer")
+     */
+    private $maxHealth = 10;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="attack_points", type="integer")
      */
     private $attackPoints = 1;
@@ -255,6 +262,30 @@ class Player
         $this->level++;
         $this->skillPoints++;
         $this->nextLevelXpNeeded = $this->level * $this->level * self::LEVEL_XP_MULTIPLIER;
+
+        return $this;
+    }
+
+    public function addAttack(): void
+    {
+        $this->attackPoints += 1;
+        $this->skillPoints -= 1;
+    }
+
+    public function addMultiplier(): void
+    {
+        $this->multiplier += 1;
+        $this->skillPoints -= 1;
+    }
+
+    public function getMaxHealth(): int
+    {
+        return $this->maxHealth;
+    }
+
+    public function setMaxHealth(int $maxHealth): Player
+    {
+        $this->maxHealth = $maxHealth;
 
         return $this;
     }

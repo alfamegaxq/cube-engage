@@ -12,6 +12,9 @@ export class CharacterService extends BaseApi {
 
     protected createUrl = '/api/player';
     protected characterStatsUrl = '/api/player';
+    protected increaseAttackUrl = '/api/player/upgrade/attack';
+    protected increaseMultiplierUrl = '/api/player/upgrade/multiplier';
+
 
     constructor(protected http: Http, protected cookies: CookieService) {
         super(http, cookies);
@@ -23,5 +26,13 @@ export class CharacterService extends BaseApi {
 
     getStats(token: string): Promise<Stats> {
         return this.get<Stats>(`${this.characterStatsUrl}/${token}`);
+    }
+
+    increaseAttack(): Promise<Stats> {
+        return this.post<Stats>(`${this.increaseAttackUrl}`, {});
+    }
+
+    increaseMultiplier(): Promise<Stats> {
+        return this.post<Stats>(`${this.increaseMultiplierUrl}`, {});
     }
 }

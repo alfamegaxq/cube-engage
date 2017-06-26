@@ -54,4 +54,25 @@ class PlayerController extends FOSRestController
 
         return new Response($serializer->serialize($player, 'json'));
     }
+
+    /**
+     * @Rest\Post("/player/upgrade/attack")
+     */
+    public function postUpgradeAttack(): Response
+    {
+        $player = $this->get('player.service')->upgradeAttack();
+        $serializer = $this->get('serializer');
+        return new Response($serializer->serialize($player, 'json'));
+    }
+
+    /**
+     * @Rest\Post("/player/upgrade/multiplier")
+     */
+    public function postUpgradeMultiplier(): Response
+    {
+        $player = $this->get('player.service')->upgradeMultiplier();
+        $serializer = $this->get('serializer');
+
+        return new Response($serializer->serialize($player, 'json'));
+    }
 }

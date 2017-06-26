@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class PlayerService
 {
     const AMOUNT_XP_FOR_TILE_DESTROYED = 1000;
-
     /** @var Session */
     private $session;
     /** @var EntityManager */
@@ -68,5 +67,32 @@ class PlayerService
 
         $this->em->persist($activePlayer);
         $this->em->flush($activePlayer);
+    }
+
+    public function upgradeAttack(): Player
+    {
+        $activePlayer = $this->getActivePlayer();
+        if ($activePlayer->getSkillPoints() > 0) {
+            $activePlayer->addAttack();
+
+            $this->em->persist($activePlayer);
+            $this->em->flush($activePlayer);
+        }
+
+        return $activePlayer;
+    }
+
+    public function upgradeMultiplier(): Player
+    {
+        $activePlayer = $this->getActivePlayer();
+        if ($activePlayer->getSkillPoints() > 0) {
+
+            $activePlayer->addMultiplier();
+
+            $this->em->persist($activePlayer);
+            $this->em->flush($activePlayer);
+        }
+
+        return $activePlayer;
     }
 }

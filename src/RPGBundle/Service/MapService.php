@@ -3,6 +3,7 @@
 namespace RPGBundle\Service;
 
 use InvalidArgumentException;
+use RPGBundle\Entity\Player;
 use RPGBundle\Event\MapAlltilesDestroyed;
 use RPGBundle\Event\MapAllTilesDestroyedEvent;
 use RPGBundle\Event\MapTileDestroyedEvent;
@@ -12,10 +13,13 @@ class MapService
 {
     /** @var  EventDispatcher */
     private $dispatcher;
+    /** @var PlayerService */
+    private $playerService;
 
-    public function __construct(EventDispatcher $dispatcher)
+    public function __construct(EventDispatcher $dispatcher, PlayerService $playerService)
     {
         $this->dispatcher = $dispatcher;
+        $this->playerService = $playerService;
     }
 
     public function generateMap(int $level): array
@@ -39,7 +43,8 @@ class MapService
     public function hitTile(array $map, int $row, int $column): array
     {
         if (isset($map[$row][$column]) && $map[$row][$column] != 0) {
-            $map[$row][$column] -= 1;
+            $player = $this->playerService->getActivePlayer();
+            $map = $this->reduceCellHealth($map, $row, $column, $player);
             $this->checkIfTileDestroyed($map, $row, $column);
             $count = $this->countZerosInMap($map);
             $this->checkIfMapDestroyed($map, $count);
@@ -73,5 +78,15 @@ class MapService
         });
 
         return $count;
+    }
+
+    private function reduceCellHealth(array $map, int $row, int $column, Player $player): array
+    {
+        $map[$row][$column] -= $player->getAttackPoints();
+        if ($map[$row][$column] < 0) {
+            $map[$row][$column] = 0;
+        }
+
+        return $map;
     }
 }

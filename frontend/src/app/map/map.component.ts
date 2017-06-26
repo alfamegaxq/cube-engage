@@ -5,7 +5,6 @@ import {State} from "../common/reducers/character.reducer";
 import {State as CommonState} from "../common/reducers/common.reducer";
 import {MapService} from "./map.service";
 import {Map} from "./map.model";
-import {CookieService} from "ng2-cookies";
 import {CharacterService} from "../character/character.service";
 import {Stats} from "../common/entities/stats";
 import * as actions from './../common/actions/character.actions';
@@ -15,7 +14,7 @@ import {Router} from "@angular/router";
     selector: 'app-map',
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.css'],
-    providers: [CharacterService, MapService, CookieService]
+    providers: [CharacterService, MapService]
 })
 export class MapComponent implements OnInit {
     map: Map;

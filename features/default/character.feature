@@ -20,5 +20,27 @@ Feature: Character creation
     Then the response status code should be 200
     And it should return:
 """
-{"id":2,"type":"test","name":"test","token":"123","level":1,"xp":0,"score":0,"multiplier":1,"health":10,"attackPoints":1}
+{"id":2,"type":"test","name":"test","token":"123","level":1,"xp":0,"score":0,"multiplier":1,"health":10,"attackPoints":1,"nextLevelXpNeeded":1000,"skillPoints":0,"leveledUp":false}
 """
+#
+#  Scenario: Increase attack points
+#    Given I am a test user
+#    Given I get a skillpoint
+#    When I request "POST" "/api/player/upgrade/attack"
+#    Then the response status code should be 200
+#    And it should return:
+#    """
+#{"status": "success"}
+#    """
+#    And I should have 0 skillpoints
+
+#  Scenario: Increase multiplier points
+#    Given I am a test user
+#    Given I get a skillpoint
+#    When I request "POST" "/api/player/upgrade/multiplier"
+#    Then the response status code should be 200
+#    And it should return:
+#    """
+#{"status": "success"}
+#    """
+#    And I should have 0 skillpoints

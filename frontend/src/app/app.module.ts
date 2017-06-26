@@ -14,6 +14,7 @@ import {WelcomeComponent} from "./scenes/home/welcome/welcome.component";
 import {MapComponent as MapSceneComponent} from "./scenes/map/map.component";
 import {MapComponent} from "./map/map.component";
 import {SuccessComponent} from "./scenes/success/success.component";
+import {LevelUpComponent} from "./scenes/levelUp/levelUp.component";
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import {SuccessComponent} from "./scenes/success/success.component";
         WelcomeComponent,
         MapSceneComponent,
         MapComponent,
-        SuccessComponent
+        SuccessComponent,
+        LevelUpComponent
     ],
     imports: [
         BrowserModule,

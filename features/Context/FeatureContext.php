@@ -157,7 +157,34 @@ class FeatureContext implements Context
     public function itShouldReturn(PyStringNode $string)
     {
         $data = $this->response->getBody()->getContents();
-
         Assert::assertJsonStringEqualsJsonString($string->getRaw(), $data);
+    }
+
+    /**
+     * @Given /^I get a skillpoint$/
+     */
+    public function iGetASkillpoint()
+    {
+        $em = self::$container->get('doctrine')->getManager();
+        $repository = $em->getRepository('RPGBundle:Player');
+        /** @var Player $player */
+        $player = $repository->findOneBy(['token' => '123']);
+        $player->setSkillPoints($player->getSkillPoints() + 1);
+
+        $em->persist($player);
+        $em->flush();
+    }
+
+    /**
+     * @Given /^I should have (\d+) skillpoints$/
+     */
+    public function iShouldHaveSkillpoints(int $points)
+    {
+        $em = self::$container->get('doctrine')->getManager();
+        $repository = $em->getRepository('RPGBundle:Player');
+        /** @var Player $player */
+        $player = $repository->findOneBy(['token' => '123']);
+
+        Assert::assertEquals($points, $player->getSkillPoints());
     }
 }

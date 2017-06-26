@@ -101,4 +101,86 @@ class PlayerServiceTest extends TestCase
     {
         return new PlayerService($this->sessionMock, $this->entityManagerMock, $this->dispatcherMock);
     }
+
+    public function testUpgradeAttack()
+    {
+        $this->entityManagerMock
+            ->expects($this->once())
+            ->method('persist');
+
+        $this->entityManagerMock
+            ->expects($this->once())
+            ->method('flush');
+
+        $playerMock = new Player();
+        $playerMock->setToken('test123')
+            ->setType(Player::TYPE_RED)
+            ->setName('name')
+            ->setSkillPoints(1);
+
+        $repositoryMock = $this->getMockBuilder(EntityRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $repositoryMock
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->willReturn($playerMock);
+
+        $this->entityManagerMock
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with('RPGBundle:Player')
+            ->willReturn($repositoryMock);
+
+        $playerService = $this->getPlayerServiceWithMocks();
+        $player = $playerService->upgradeAttack();
+
+        $this->assertEquals(2, $player->getAttackPoints());
+
+        $player = $playerService->upgradeAttack();
+
+        $this->assertEquals(2, $player->getAttackPoints());
+    }
+
+    public function testUpgradeMultiplier()
+    {
+        $this->entityManagerMock
+            ->expects($this->once())
+            ->method('persist');
+
+        $this->entityManagerMock
+            ->expects($this->once())
+            ->method('flush');
+
+        $playerMock = new Player();
+        $playerMock->setToken('test123')
+            ->setType(Player::TYPE_RED)
+            ->setName('name')
+            ->setSkillPoints(1);
+
+        $repositoryMock = $this->getMockBuilder(EntityRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $repositoryMock
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->willReturn($playerMock);
+
+        $this->entityManagerMock
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with('RPGBundle:Player')
+            ->willReturn($repositoryMock);
+
+        $playerService = $this->getPlayerServiceWithMocks();
+        $player = $playerService->upgradeMultiplier();
+
+        $this->assertEquals(2, $player->getMultiplier());
+
+        $player = $playerService->upgradeMultiplier();
+
+        $this->assertEquals(2, $player->getMultiplier());
+    }
 }

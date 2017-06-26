@@ -5,6 +5,7 @@ import {HomeComponent} from "./scenes/home/home.component";
 import {WelcomeComponent} from "./scenes/home/welcome/welcome.component";
 import {MapComponent} from "./scenes/map/map.component";
 import {SuccessComponent} from "./scenes/success/success.component";
+import {LevelUpComponent} from "app/scenes/levelUp/levelUp.component";
 
 
 export const appRoutes: Routes = [
@@ -20,7 +21,8 @@ export const appRoutes: Routes = [
             {path: '', component: HomeComponent, outlet: 'game-stats'},
             {path: '', component: WelcomeComponent, outlet: 'game-screen'},
             {path: 'explore', component: MapComponent, outlet: 'game-screen'},
-            {path: 'success', component: SuccessComponent, outlet: 'game-screen'}
+            {path: 'success', component: SuccessComponent, outlet: 'game-screen'},
+            {path: 'level-up', component: LevelUpComponent, outlet: 'game-screen'}
         ]
     }
 ];

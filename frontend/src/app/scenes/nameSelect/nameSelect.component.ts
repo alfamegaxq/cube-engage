@@ -14,7 +14,7 @@ import {Stats} from "../../common/entities/stats";
     selector: 'scene-name-select',
     templateUrl: './nameSelect.component.html',
     styleUrls: ['./nameSelect.component.css'],
-    providers: [CharacterService, CookieService]
+    providers: [CharacterService]
 })
 export class NameSelectComponent implements OnInit {
     name: string;
