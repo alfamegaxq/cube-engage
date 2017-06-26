@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Store} from "@ngrx/store";
 import * as fromRoot from './common/index';
-import {CharacterTypes} from "./character/character.model";
+import {saveState} from "./common/localStorage";
 
 @Component({
     selector: 'app-root',
@@ -11,5 +11,8 @@ import {CharacterTypes} from "./character/character.model";
 export class AppComponent {
 
     constructor(private store: Store<fromRoot.AppState>) {
+        store.subscribe((state) => {
+            saveState(state);
+        });
     }
 }
