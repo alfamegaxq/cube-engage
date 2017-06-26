@@ -267,6 +267,8 @@ class Player
         $this->level++;
         $this->skillPoints++;
         $this->nextLevelXpNeeded = $this->level * $this->level * self::LEVEL_XP_MULTIPLIER;
+        $this->maxHealth += ($this->maxHealth / 2);
+        $this->health = $this->maxHealth;
 
         return $this;
     }
