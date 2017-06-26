@@ -49,12 +49,9 @@ class MapService
     public function hitTile(array $map, int $row, int $column): array
     {
         if (isset($map[$row][$column]) && $map[$row][$column] != 0) {
+            $initialCellValue = $map[$row][$column];
             $player = $this->playerService->getActivePlayer();
-            $map = $this->reduceCellHealth($map, $row, $column, $player);
-            $player->getHit($map[$row][$column]);
-            $this->checkIfTileDestroyed($map, $row, $column);
-            $count = $this->countZerosInMap($map);
-            $this->checkIfMapDestroyed($map, $count);
+            $map = $this->calculateHitOutcome($map, $row, $column, $player, $initialCellValue);
 
             $this->em->persist($player);
             $this->em->flush();
@@ -96,6 +93,23 @@ class MapService
         if ($map[$row][$column] < 0) {
             $map[$row][$column] = 0;
         }
+
+        return $map;
+    }
+
+    private function calculateHitOutcome(
+        array $map,
+        int $row,
+        int $column,
+        Player $player,
+        int $initialCellValue
+    ): array {
+        $map = $this->reduceCellHealth($map, $row, $column, $player);
+        $player->getHit($map[$row][$column]);
+        $player->addScore(($initialCellValue - $map[$row][$column]) * Player::SCORE_MULTIPLIER);
+        $this->checkIfTileDestroyed($map, $row, $column);
+        $count = $this->countZerosInMap($map);
+        $this->checkIfMapDestroyed($map, $count);
 
         return $map;
     }

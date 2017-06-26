@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Player
 {
     const LEVEL_XP_MULTIPLIER = 1000;
+    const SCORE_MULTIPLIER = 1000;
     const TYPE_RED = 'RED';
     const TYPE_BLUE = 'BLUE';
     const TYPE_BLACK = 'BLACK';
@@ -190,6 +191,11 @@ class Player
         $this->score = $score;
 
         return $this;
+    }
+
+    public function addScore(int $score): void
+    {
+        $this->score += $score;
     }
 
     public function getMultiplier(): int
