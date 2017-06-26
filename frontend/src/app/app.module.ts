@@ -13,6 +13,7 @@ import {StatsComponent} from "./character/stats/stats.component";
 import {WelcomeComponent} from "./scenes/home/welcome/welcome.component";
 import {MapComponent as MapSceneComponent} from "./scenes/map/map.component";
 import {MapComponent} from "./map/map.component";
+import {SuccessComponent} from "./scenes/success/success.component";
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import {MapComponent} from "./map/map.component";
         StatsComponent,
         WelcomeComponent,
         MapSceneComponent,
-        MapComponent
+        MapComponent,
+        SuccessComponent
     ],
     imports: [
         BrowserModule,

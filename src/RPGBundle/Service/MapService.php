@@ -48,9 +48,10 @@ class MapService
         return $map;
     }
 
-    private function checkIfMapDestroyed(array $map, $count): void
+    private function checkIfMapDestroyed(array $map, int $count): void
     {
-        if ($count === pow(count($map), 2)) {
+        $halfTiles = pow(count($map), 2) / 2;
+        if ($count >= $halfTiles) {
             $this->dispatcher->dispatch(MapAlltilesDestroyedEvent::NAME);
         }
     }

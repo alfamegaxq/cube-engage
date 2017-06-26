@@ -253,6 +253,7 @@ class Player
     public function levelUp(): Player
     {
         $this->level++;
+        $this->skillPoints++;
         $this->nextLevelXpNeeded = $this->level * $this->level * self::LEVEL_XP_MULTIPLIER;
 
         return $this;
