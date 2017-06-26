@@ -6,6 +6,7 @@ import {WelcomeComponent} from "./scenes/home/welcome/welcome.component";
 import {MapComponent} from "./scenes/map/map.component";
 import {SuccessComponent} from "./scenes/success/success.component";
 import {LevelUpComponent} from "app/scenes/levelUp/levelUp.component";
+import {EndGameComponent} from "./scenes/endGame/endGame.component";
 
 
 export const appRoutes: Routes = [
@@ -24,5 +25,8 @@ export const appRoutes: Routes = [
             {path: 'success', component: SuccessComponent, outlet: 'game-screen'},
             {path: 'level-up', component: LevelUpComponent, outlet: 'game-screen'}
         ]
+    },
+    {
+        path: 'end-game', component: EndGameComponent
     }
 ];

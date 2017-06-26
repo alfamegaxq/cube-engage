@@ -8,6 +8,7 @@ import {Map} from "./map.model";
 import {CharacterService} from "../character/character.service";
 import {Stats} from "../common/entities/stats";
 import * as actions from './../common/actions/character.actions';
+import * as commonActions from './../common/actions/common.actions';
 import {Router} from "@angular/router";
 
 @Component({
@@ -45,12 +46,19 @@ export class MapComponent implements OnInit {
             if (this.token) {
                 this.characterService.getStats(this.token).then((stats: Stats) => {
                     this.store.dispatch(new actions.SetCharacterStatus(stats));
+
+                    if (stats.health <= 0) {
+                        this.store.dispatch(new commonActions.EndGame());
+                        this.router.navigateByUrl('/end-game');
+                    }
                 });
             }
 
             if (this.map.length === 0) {
                 this.router.navigateByUrl('/home/(game-screen:success)');
             }
+
+
         });
     }
 }

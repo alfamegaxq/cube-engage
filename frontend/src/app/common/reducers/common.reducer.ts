@@ -3,12 +3,14 @@ import {AbstractAction} from "../actions/abstract.actions";
 
 export interface State {
     gameStarted: boolean,
-    apiToken: string
+    apiToken: string,
+    endGame: boolean
 }
 
 const initialState: State = {
     gameStarted: false,
-    apiToken: null
+    apiToken: null,
+    endGame: false
 };
 
 export function reducer(state = initialState, action: AbstractAction): State {
@@ -28,6 +30,15 @@ export function reducer(state = initialState, action: AbstractAction): State {
                 state,
                 {
                     apiToken: action.payload
+                }
+            );
+        }
+        case common.CommonActionTypes.END_GAME: {
+            return Object.assign(
+                {},
+                state,
+                {
+                    endGame: true
                 }
             );
         }

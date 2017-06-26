@@ -5,6 +5,7 @@ import {AbstractAction} from "./abstract.actions";
 export const CommonActionTypes = {
     START_GAME: '[Common] Start game',
     SET_API_TOKEN: '[Common] Set api token',
+    END_GAME: '[Common] End game',
 };
 
 export class StartGame implements AbstractAction {
@@ -16,6 +17,13 @@ export class StartGame implements AbstractAction {
 
 export class SetApiToken implements AbstractAction {
     type = CommonActionTypes.SET_API_TOKEN;
+
+    constructor(public payload?: string) {
+    }
+}
+
+export class EndGame implements AbstractAction {
+    type = CommonActionTypes.END_GAME;
 
     constructor(public payload?: string) {
     }
