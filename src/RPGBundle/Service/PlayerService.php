@@ -4,6 +4,8 @@ namespace RPGBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use RPGBundle\Entity\Player;
+use RPGBundle\Event\LevelUpEvent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class PlayerService
@@ -16,11 +18,14 @@ class PlayerService
     private $em;
     /** @var Player */
     private $player;
+    /** @var EventDispatcher */
+    private $dispatcher;
 
-    public function __construct(Session $session, EntityManager $em)
+    public function __construct(Session $session, EntityManager $em, EventDispatcher $dispatcher)
     {
         $this->session = $session;
         $this->em = $em;
+        $this->dispatcher = $dispatcher;
     }
 
     public function getActivePlayer(): Player
@@ -45,11 +50,23 @@ class PlayerService
     public function gainXpFromDestroyedTile(): Player
     {
         $activePlayer = $this->getActivePlayer();
-        //@TODO check if not level up
         $activePlayer->addXp(self::AMOUNT_XP_FOR_TILE_DESTROYED);
+        if ($activePlayer->hasLeveledUp()) {
+            $this->dispatcher->dispatch(LevelUpEvent::NAME);
+        }
+
         $this->em->persist($activePlayer);
         $this->em->flush($activePlayer);
 
         return $activePlayer;
+    }
+
+    public function levelUp(): void
+    {
+        $activePlayer = $this->getActivePlayer();
+        $activePlayer->levelUp();
+
+        $this->em->persist($activePlayer);
+        $this->em->flush($activePlayer);
     }
 }

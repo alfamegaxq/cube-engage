@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Player
 {
+    const LEVEL_XP_MULTIPLIER = 1000;
     const TYPE_RED = 'RED';
     const TYPE_BLUE = 'BLUE';
     const TYPE_BLACK = 'BLACK';
@@ -61,6 +62,13 @@ class Player
     /**
      * @var int
      *
+     * @ORM\Column(name="next_level_xp_needed", type="integer")
+     */
+    private $nextLevelXpNeeded = self::LEVEL_XP_MULTIPLIER;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="score", type="integer")
      */
     private $score = 0;
@@ -85,6 +93,13 @@ class Player
      * @ORM\Column(name="attack_points", type="integer")
      */
     private $attackPoints = 1;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="skill_points", type="integer")
+     */
+    private $skillPoints = 0;
 
     public function getId(): ?int
     {
@@ -202,6 +217,43 @@ class Player
     public function setAttackPoints(int $attackPoints): Player
     {
         $this->attackPoints = $attackPoints;
+
+        return $this;
+    }
+
+    public function getNextLevelXpNeeded(): int
+    {
+        return $this->nextLevelXpNeeded;
+    }
+
+    public function setNextLevelXpNeeded(int $nextLevelXpNeeded): Player
+    {
+        $this->nextLevelXpNeeded = $nextLevelXpNeeded;
+
+        return $this;
+    }
+
+    public function getSkillPoints(): int
+    {
+        return $this->skillPoints;
+    }
+
+    public function setSkillPoints(int $skillPoints): Player
+    {
+        $this->skillPoints = $skillPoints;
+
+        return $this;
+    }
+
+    public function hasLeveledUp(): bool
+    {
+        return $this->xp >= $this->nextLevelXpNeeded;
+    }
+
+    public function levelUp(): Player
+    {
+        $this->level++;
+        $this->nextLevelXpNeeded = $this->level * $this->level * self::LEVEL_XP_MULTIPLIER;
 
         return $this;
     }

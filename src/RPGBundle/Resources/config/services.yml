@@ -37,3 +37,9 @@ services:
         autowire: true
         tags:
             - { name: kernel.event_listener, event: map.destroyed, method: onAllTilesDestroyed }
+
+    level_up.event_listener:
+        class: RPGBundle\EventListener\LevelUpEventListener
+        autowire: true
+        tags:
+            - { name: kernel.event_listener, event: level.up, method: onLevelUp }

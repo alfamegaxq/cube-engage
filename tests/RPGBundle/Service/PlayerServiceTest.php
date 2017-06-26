@@ -7,7 +7,9 @@ use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use RPGBundle\Entity\Player;
+use RPGBundle\Event\LevelUpEvent;
 use RPGBundle\Service\PlayerService;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class PlayerServiceTest extends TestCase
@@ -16,6 +18,8 @@ class PlayerServiceTest extends TestCase
     private $sessionMock;
     /** @var PHPUnit_Framework_MockObject_MockObject|EntityManager */
     private $entityManagerMock;
+    /** @var PHPUnit_Framework_MockObject_MockObject|EventDispatcher */
+    private $dispatcherMock;
 
     public function setUp()
     {
@@ -24,6 +28,10 @@ class PlayerServiceTest extends TestCase
             ->getMock();
 
         $this->entityManagerMock = $this->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->dispatcherMock = $this->getMockBuilder(EventDispatcher::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -74,18 +82,23 @@ class PlayerServiceTest extends TestCase
             ->with('RPGBundle:Player')
             ->willReturn($repositoryMock);
 
-        $playerService = $this->getPlayerService($this->sessionMock, $this->entityManagerMock);
+        $this->dispatcherMock
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with(LevelUpEvent::NAME);
+
+        $playerService = $this->getPlayerService($this->sessionMock, $this->entityManagerMock, $this->dispatcherMock);
         $updatedPlayer = $playerService->gainXpFromDestroyedTile();
         $this->assertEquals(1000, $updatedPlayer->getXp());
     }
 
-    public function getPlayerService($sessionMock, $entityManagerMock): PlayerService
+    public function getPlayerService($sessionMock, $entityManagerMock, $dispatcherMock): PlayerService
     {
-        return new PlayerService($sessionMock, $entityManagerMock);
+        return new PlayerService($sessionMock, $entityManagerMock, $dispatcherMock);
     }
 
     public function getPlayerServiceWithMocks(): PlayerService
     {
-        return new PlayerService($this->sessionMock, $this->entityManagerMock);
+        return new PlayerService($this->sessionMock, $this->entityManagerMock, $this->dispatcherMock);
     }
 }
