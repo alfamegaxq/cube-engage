@@ -4,7 +4,6 @@ import {Http, Response} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 import {BaseApi} from "../../api/base";
 import {Map, Cell} from "./map.model";
-import {Character} from "../common/entities/character";
 import {Stats} from "../common/entities/stats";
 import {CookieService} from "ng2-cookies";
 
@@ -13,6 +12,7 @@ export class MapService extends BaseApi {
 
     protected getUrl = '/api/secure/map';
     protected clickUrl = '/api/secure/map/click';
+    protected deleteUrl = '/api/secure/map/delete';
 
     constructor(protected http: Http, protected cookies: CookieService) {
         super(http, cookies);
@@ -24,5 +24,9 @@ export class MapService extends BaseApi {
 
     clickTile(cell: Cell): Promise<Map> {
         return this.get<Map>(`${this.clickUrl}/${cell.row}/${cell.col}`);
+    }
+
+    deleteMap(): Promise<Response> {
+        return this.del(this.deleteUrl);
     }
 }

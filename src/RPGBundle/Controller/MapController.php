@@ -41,4 +41,14 @@ class MapController extends FOSRestController
 
         return new JsonResponse($map);
     }
+
+    /**
+     * @Rest\Post("/secure/map/delete")
+     */
+    public function deleteMap(Request $request): JsonResponse
+    {
+        $request->getSession()->remove('map');
+
+        return new JsonResponse([]);
+    }
 }

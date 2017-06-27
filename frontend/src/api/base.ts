@@ -40,4 +40,15 @@ export abstract class BaseApi {
             .toPromise()
             .then((response: Response) => response.json() as T);
     }
+
+    protected del(url:string): Promise<Response> {
+        let headers = new Headers();
+        headers.append('X-Api-Token', this.cookies.get('apiToken'));
+        headers.append('PHPSESSID', this.cookies.get('PHPSESSID'));
+        headers.append('Access-Control-Allow-Credentials', 'true');
+
+        return this.http.post(this.apiUrl + url, {}, {withCredentials: true, headers: headers})
+            .toPromise()
+            .then((response: Response) => response);
+    }
 }
