@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import * as fromRoot from './../../common/index';
 import {State} from "../../common/reducers/character.reducer";
@@ -15,8 +15,10 @@ import {Router} from "@angular/router";
     styleUrls: ['./endGame.component.css'],
     providers: [ScoreService]
 })
-export class EndGameComponent implements OnInit {
+export class EndGameComponent implements OnInit, OnDestroy {
     stats: Stats;
+    private characterSubscription;
+    private commonSubscription;
 
     constructor(private store: Store<fromRoot.AppState>,
                 private scoreService: ScoreService,
@@ -25,11 +27,13 @@ export class EndGameComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.store.select('character').subscribe((state: State) => {
+        this.characterSubscription = this.store.select('character').subscribe((state: State) => {
             if (state.stats.health > 0) {
+                console.log('aa');
+
                 this.router.navigateByUrl('/');
             }
-            this.store.select('common').subscribe((commonState: CommonState) => {
+            this.commonSubscription = this.store.select('common').subscribe((commonState: CommonState) => {
                 if (!this.stats) {
                     this.stats = state.stats;
                     this.scoreService.getTopScore().then((scoreList: Score[]) => {
@@ -39,5 +43,10 @@ export class EndGameComponent implements OnInit {
                 }
             });
         });
+    }
+
+    ngOnDestroy(){
+        this.characterSubscription.unsubscribe();
+        this.commonSubscription.unsubscribe();
     }
 }

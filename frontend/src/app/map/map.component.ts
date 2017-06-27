@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import * as fromRoot from './../common/index';
 import {State} from "../common/reducers/character.reducer";
@@ -17,9 +17,10 @@ import {Router} from "@angular/router";
     styleUrls: ['./map.component.css'],
     providers: [CharacterService, MapService]
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
     map: Map;
     token: string;
+    private commonSubscription;
 
     constructor(private store: Store<fromRoot.AppState>,
                 private mapService: MapService,
@@ -32,7 +33,7 @@ export class MapComponent implements OnInit {
             this.map = map;
         });
 
-        this.store.select('common').subscribe((state: CommonState) => {
+        this.commonSubscription = this.store.select('common').subscribe((state: CommonState) => {
             this.token = state.apiToken;
         });
     }
@@ -55,8 +56,11 @@ export class MapComponent implements OnInit {
             if (this.map.length === 0) {
                 this.router.navigateByUrl('/home/(game-screen:success)');
             }
-
-
         });
+    }
+
+
+    ngOnDestroy(): void {
+        this.commonSubscription.unsubscribe();
     }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import * as fromRoot from './../../common/index';
 import * as actions from './../../common/actions/character.actions';
@@ -17,11 +17,13 @@ import {ERROR_EXISTS} from "api/base";
     styleUrls: ['./nameSelect.component.css'],
     providers: [CharacterService]
 })
-export class NameSelectComponent implements OnInit {
+export class NameSelectComponent implements OnInit, OnDestroy {
     name: string;
     type: string;
     nextClicked: boolean;
     errorExists: false;
+
+    private characterSubscription;
 
     constructor(private store: Store<fromRoot.AppState>,
                 private router: Router,
@@ -30,9 +32,10 @@ export class NameSelectComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.store.select('character').subscribe((state: State) => {
+        this.characterSubscription = this.store.select('character').subscribe((state: State) => {
 
             if (!state.character.type) {
+
                 this.router.navigateByUrl('/');
             }
 
@@ -84,5 +87,9 @@ export class NameSelectComponent implements OnInit {
         character.type = this.type;
 
         return character;
+    }
+
+    ngOnDestroy(): void {
+        this.characterSubscription.unsubscribe();
     }
 }

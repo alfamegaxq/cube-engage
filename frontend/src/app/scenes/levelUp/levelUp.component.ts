@@ -15,12 +15,13 @@ import * as actions from './../../common/actions/character.actions';
 export class LevelUpComponent implements OnInit {
 
     stats: Stats;
+    private characterSubscription;
 
     constructor(private store: Store<fromRoot.AppState>, private characterService: CharacterService) {
     }
 
     ngOnInit(): void {
-        this.store.select('character').subscribe((state: State) => {
+        this.characterSubscription = this.store.select('character').subscribe((state: State) => {
             this.stats = state.stats;
         });
     }
@@ -35,5 +36,9 @@ export class LevelUpComponent implements OnInit {
         this.characterService.increaseMultiplier().then((stats: Stats) => {
             this.store.dispatch(new actions.SetCharacterStatus(stats));
         });
+    }
+
+    ngOnDestroy(): void {
+        this.characterSubscription.unsubscribe();
     }
 }

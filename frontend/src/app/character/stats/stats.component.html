@@ -2,9 +2,11 @@
     <strong>The {{character.type}} {{character.name}}</strong>
 </div>
 <div class="row">
-    Level: {{stats.level}}<br>
-    Xp: {{stats.xp}} / {{stats.nextLevelXpNeeded}}<br>
-    Hp: {{stats.health}} / {{stats.maxHealth}}<br>
-    Atk: {{stats.attackPoints}}<br>
-    Score: {{stats.score}} x {{stats.multiplier}}<br>
+    <ul class="list-group">
+        <li class="list-group-item">Level: {{stats.level}}</li>
+        <li class="list-group-item">Xp: {{stats.xp}} / {{stats.nextLevelXpNeeded}}</li>
+        <li class="list-group-item">Hp: {{stats.health}} / {{stats.maxHealth}}</li>
+        <li class="list-group-item">Atk: {{stats.attackPoints}}</li>
+        <li class="list-group-item">Score: {{stats.score}} x {{stats.multiplier}}</li>
+    </ul>
 </div>

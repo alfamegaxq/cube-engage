@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import * as fromRoot from './../../common/index';
 import {Router} from "@angular/router";
@@ -14,21 +14,24 @@ import * as commonActions from './../../common/actions/common.actions';
     styleUrls: ['./home.component.css'],
     providers: [MapService]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
     stats: Stats;
+
+    private characterSubscription;
+    private commonSubscription;
 
     constructor(private store: Store<fromRoot.AppState>, private router: Router, private mapService: MapService) {
     }
 
     ngOnInit(): void {
-        this.store.select('common').subscribe((state: CommonState) => {
+        this.commonSubscription = this.store.select('common').subscribe((state: CommonState) => {
             if (!state.gameStarted) {
                 this.router.navigateByUrl('/');
             }
         });
 
-        this.store.select('character').subscribe((state: CharacterState) => {
+        this.characterSubscription = this.store.select('character').subscribe((state: CharacterState) => {
             this.stats = state.stats;
         });
     }
@@ -38,5 +41,10 @@ export class HomeComponent implements OnInit {
             this.store.dispatch(new commonActions.Restart());
             this.router.navigateByUrl('/');
         });
+    }
+
+    ngOnDestroy(){
+        this.characterSubscription.unsubscribe();
+        this.commonSubscription.unsubscribe();
     }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import * as fromRoot from './../../common/index';
 import * as actions from './../../common/actions/character.actions';
@@ -11,17 +11,18 @@ import {State} from "../../common/reducers/character.reducer";
     templateUrl: './characterSelect.component.html',
     styleUrls: ['./characterSelect.component.css']
 })
-export class CharacterSelectComponent implements OnInit{
+export class CharacterSelectComponent implements OnInit, OnDestroy{
     types = [];
     pageValid = null;
     selected = null;
+    private characterSubscription;
 
     constructor(private store: Store<fromRoot.AppState>, private router:Router) {
         this.types = CharacterTypes;
     }
 
     ngOnInit(): void {
-        this.store.select('character').subscribe((state: State) => {
+        this.characterSubscription = this.store.select('character').subscribe((state: State) => {
             if (state.character.type) {
                 this.pageValid = true;
                 this.selected = state.character.type;
@@ -40,5 +41,9 @@ export class CharacterSelectComponent implements OnInit{
        } else {
            this.pageValid = false;
        }
+    }
+
+    ngOnDestroy(): void {
+        this.characterSubscription.unsubscribe();
     }
 }
