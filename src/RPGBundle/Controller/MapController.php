@@ -12,7 +12,7 @@ class MapController extends FOSRestController
     /**
      * @Rest\Get("/secure/map")
      */
-    public function getMapAction(Request $request)
+    public function getMapAction(Request $request): JsonResponse
     {
         $mapService = $this->get('map.service');
 

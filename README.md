@@ -8,9 +8,10 @@ The full stack rover
 - `composer install --ignore-platform-reqs`
 - `docker-compose build` (optional to rebuild containers)
 - `docker-compose up`
+- wait for text: `angular_1  | webpack: Compiled successfully.`
 - connect to php container `docker exec -it challenge_php bash` and launch command:
 `php bin/console doctrine:schema:update --force`
-- wait for text: `angular_1  | webpack: Compiled successfully.`
+- if previous step provided some errors, try deleting `.docker_data` fodler
 - open browser `0.0.0.0:4200`
 
 ### Tests
@@ -138,6 +139,10 @@ At the end of the game, player is presented with his score and top 10 player sco
 **Problem:** browser console shows `net::ERR_CONNECTION_REFUSED`
 
 **Solution:** your docker crashed. This shouldn't happen on normal scenario
+
+**Problem:** trying to update schema you can get permission denied for ip xxx.xx.xxx.xxx error
+
+**Solution:** for me helped deleting .docker_data
 
 ### TODOs
 
