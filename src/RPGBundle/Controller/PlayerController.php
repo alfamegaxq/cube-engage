@@ -47,10 +47,23 @@ class PlayerController extends FOSRestController
     /**
      * @Rest\Get("/player/{token}")
      */
-    public function getPlayer(string $token): Response
+    public function getPlayer(Request $request, string $token): Response
     {
         $player = $this->getDoctrine()->getRepository('RPGBundle:Player')->findOneBy(['token' => $token]);
         $serializer = $this->get('serializer');
+
+        return new Response($serializer->serialize($player, 'json'));
+    }
+
+    /**
+     * @Rest\Post("/player/login")
+     */
+    public function postLoginAction(Request $request): Response
+    {
+        $player = $this->getDoctrine()->getRepository('RPGBundle:Player')->findOneBy(['name' => $request->request->get('name')]);
+        $serializer = $this->get('serializer');
+
+        $request->getSession()->set('apiToken', $player->getToken());
 
         return new Response($serializer->serialize($player, 'json'));
     }

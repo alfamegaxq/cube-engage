@@ -16,6 +16,7 @@ import {MapComponent} from "./map/map.component";
 import {SuccessComponent} from "./scenes/success/success.component";
 import {LevelUpComponent} from "./scenes/levelUp/levelUp.component";
 import {EndGameComponent} from "./scenes/endGame/endGame.component";
+import {LoginComponent} from "./scenes/login/login.component";
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import {EndGameComponent} from "./scenes/endGame/endGame.component";
         MapComponent,
         SuccessComponent,
         LevelUpComponent,
-        EndGameComponent
+        EndGameComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule,

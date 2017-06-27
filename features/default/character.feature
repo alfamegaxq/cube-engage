@@ -20,7 +20,20 @@ Feature: Character creation
     Then the response status code should be 200
     And it should return:
 """
-{"id":2,"type":"test","name":"test","token":"123","level":1,"xp":0,"score":0,"multiplier":1,"health":10,"attackPoints":1,"nextLevelXpNeeded":1000,"skillPoints":0,"leveledUp":false}
+{"id":2,"type":"test","name":"test","token":"123","level":1,"xp":0,"score":0,"multiplier":1,"health":10,"attackPoints":1,"nextLevelXpNeeded":1000,"skillPoints":0,"leveledUp":false,"maxHealth":10}
+"""
+
+  Scenario: login with player name
+    Given I am a test user
+    Given I have the payload:
+  """
+{"name": "test"}
+  """
+    When I request "Post" "/api/player/login"
+    Then the response status code should be 200
+    And it should return:
+"""
+{"id":2,"type":"test","name":"test","token":"123","level":1,"xp":0,"score":0,"multiplier":1,"health":10,"attackPoints":1,"nextLevelXpNeeded":1000,"skillPoints":0,"leveledUp":false,"maxHealth":10}
 """
 #
 #  Scenario: Increase attack points

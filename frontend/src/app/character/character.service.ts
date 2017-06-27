@@ -10,6 +10,7 @@ import {Stats} from "../common/entities/stats";
 @Injectable()
 export class CharacterService extends BaseApi {
 
+    protected loginUrl = '/api/player/login';
     protected createUrl = '/api/player';
     protected characterStatsUrl = '/api/player';
     protected increaseAttackUrl = '/api/player/upgrade/attack';
@@ -29,10 +30,14 @@ export class CharacterService extends BaseApi {
     }
 
     increaseAttack(): Promise<Stats> {
-        return this.post<Stats>(`${this.increaseAttackUrl}`, {});
+        return this.post<Stats>(this.increaseAttackUrl, {});
     }
 
     increaseMultiplier(): Promise<Stats> {
-        return this.post<Stats>(`${this.increaseMultiplierUrl}`, {});
+        return this.post<Stats>(this.increaseMultiplierUrl, {});
+    }
+
+    login(name: string): Promise<Character> {
+        return this.post<Character>(this.loginUrl, {name: name});
     }
 }

@@ -128,7 +128,7 @@ class FeatureContext implements Context
         foreach ($content as $row) {
             Assert::assertEquals($columns, count($row));
             foreach ($row as $cell) {
-                Assert::assertTrue($cell >= 1 && $cell <= $columns);
+                Assert::assertTrue($cell >= 1 && $cell <= $columns * 2);
             }
         }
     }
