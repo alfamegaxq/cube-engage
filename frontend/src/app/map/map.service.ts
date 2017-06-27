@@ -18,8 +18,8 @@ export class MapService extends BaseApi {
         super(http, cookies);
     }
 
-    getMap(stats: Stats): Promise<Map> {
-        return this.get<Map>(this.getUrl + '/' + stats.level);
+    getMap(): Promise<Map> {
+        return this.get<Map>(this.getUrl);
     }
 
     clickTile(cell: Cell): Promise<Map> {

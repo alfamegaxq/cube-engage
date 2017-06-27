@@ -28,10 +28,8 @@ export class MapComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.store.select('character').subscribe((state: State) => {
-            this.mapService.getMap(state.stats).then((map: Map) => {
-                this.map = map;
-            });
+        this.mapService.getMap().then((map: Map) => {
+            this.map = map;
         });
 
         this.store.select('common').subscribe((state: CommonState) => {

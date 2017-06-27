@@ -10,14 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 class MapController extends FOSRestController
 {
     /**
-     * @Rest\Get("/secure/map/{level}", requirements={"level" = "\d+"})
+     * @Rest\Get("/secure/map")
      */
-    public function getMapAction(Request $request, int $level)
+    public function getMapAction(Request $request)
     {
         $mapService = $this->get('map.service');
 
         if (!($map = $request->getSession()->get('map'))) {
-            $map = $mapService->generateMap($level);
+            $map = $mapService->generateMap();
             $request->getSession()->set('map', $map);
         }
 

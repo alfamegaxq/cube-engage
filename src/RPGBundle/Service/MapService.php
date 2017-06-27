@@ -28,8 +28,10 @@ class MapService
         $this->em = $em;
     }
 
-    public function generateMap(int $level): array
+    public function generateMap(): array
     {
+        $level = $this->playerService->getActivePlayer()->getLevel();
+
         if ($level < 1) {
             throw new InvalidArgumentException();
         }
