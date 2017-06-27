@@ -1,8 +1,9 @@
 td {
     width: 40px;
     height: 40px;
-    margin: 10px;
+    border: white 10px solid;
     cursor: pointer;
+    text-align: center;
 }
 
 .red {
