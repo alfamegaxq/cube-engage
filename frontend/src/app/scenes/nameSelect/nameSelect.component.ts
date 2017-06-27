@@ -9,6 +9,7 @@ import {CharacterService} from "../../character/character.service";
 import {State} from "../../common/reducers/character.reducer";
 import {CookieService} from 'ng2-cookies';
 import {Stats} from "../../common/entities/stats";
+import {ERROR_EXISTS} from "api/base";
 
 @Component({
     selector: 'scene-name-select',
@@ -20,6 +21,7 @@ export class NameSelectComponent implements OnInit {
     name: string;
     type: string;
     nextClicked: boolean;
+    errorExists: false;
 
     constructor(private store: Store<fromRoot.AppState>,
                 private router: Router,
@@ -61,7 +63,12 @@ export class NameSelectComponent implements OnInit {
                 this.store.dispatch(new commonActions.StartGame(null));
                 this.cookies.set('apiToken', backendCharacter.token);
                 this.router.navigateByUrl('/home');
-            });
+            }).catch((e) => {
+                if (e.error === ERROR_EXISTS) {
+                    this.errorExists = e.error;
+                }
+            }
+        );
     }
 
     private getCharacterStats(character: Character): void {

@@ -54,8 +54,6 @@ export function reducer(state = initialState, action: AbstractAction): State {
             );
         }
         case common.CommonActionTypes.RESTART: {
-            console.log('RETURNING INITIAL STATE!!!!!!!!!!!!!!!!');
-            console.log(initialState);
             return Object.assign(
                 {},
                 initialState,

@@ -24,9 +24,16 @@ class PlayerController extends FOSRestController
      */
     public function postPlayerAction(Request $request): Response
     {
+        $name = $request->request->get('name');
+        $type = $request->request->get('type');
+
+        if ($this->isNameExisting($name)) {
+            return new Response('', 409);
+        }
+
         $player = new Player();
-        $player->setType($request->request->get('type'))
-            ->setName($request->request->get('name'))
+        $player->setType($type)
+            ->setName($name)
             ->setToken(md5(uniqid()));
 
         $this->savePlayer($player);
@@ -75,6 +82,7 @@ class PlayerController extends FOSRestController
     {
         $player = $this->get('player.service')->upgradeAttack();
         $serializer = $this->get('serializer');
+
         return new Response($serializer->serialize($player, 'json'));
     }
 
@@ -85,6 +93,15 @@ class PlayerController extends FOSRestController
     {
         $player = $this->get('player.service')->upgradeMultiplier();
         $serializer = $this->get('serializer');
+
         return new Response($serializer->serialize($player, 'json'));
+    }
+
+    private function isNameExisting(string $name): bool
+    {
+        $em = $this->getDoctrine()->getManager();
+        $existing = $em->getRepository('RPGBundle:Player')->findOneBy(['name' => $name]);
+
+        return count($existing) != 0;
     }
 }

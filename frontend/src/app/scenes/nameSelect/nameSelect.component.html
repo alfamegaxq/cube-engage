@@ -8,6 +8,12 @@
         </label>
     </div>
     <div class="row">
+        <div *ngIf="errorExists" class="alert alert-danger"
+             role="alert">
+            <strong>Name already taken</strong>
+        </div>
+    </div>
+    <div class="row">
         <div *ngIf="(name === undefined || name.length < 2) && nextClicked === true" class="alert alert-danger"
              role="alert">
             <strong>Name should be at least 3 symbols length</strong>

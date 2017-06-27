@@ -1,6 +1,8 @@
 import {Headers, Http, Response} from "@angular/http";
 import {CookieService} from "ng2-cookies";
 
+export const ERROR_EXISTS = 'EXISTS';
+
 export abstract class BaseApi {
     protected apiUrl = 'http://challenge.dev:8001';
 
@@ -21,7 +23,12 @@ export abstract class BaseApi {
 
         return this.http.post(this.apiUrl + url, body, {withCredentials: true, headers: headers})
             .toPromise()
-            .then((response: Response) => response.json() as T);
+            .then((response: Response) => response.json() as T)
+            .catch((e: Response) => {
+                if (e.status == 409) {
+                    throw {error: ERROR_EXISTS}
+                }
+            });
     }
 
     protected get<T>(url: string): Promise<T> {
