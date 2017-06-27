@@ -35,6 +35,7 @@ export class LoginComponent {
                 this.store.dispatch(new actions.SelectCharacterColor(backendCharacter.type));
                 this.store.dispatch(new actions.SelectCharacterName(backendCharacter.name));
                 this.store.dispatch(new actions.SetCharacterStatus(stats));
+                this.store.dispatch(new commonActions.SetApiToken(backendCharacter.token));
 
                 this.store.dispatch(new commonActions.StartGame(null));
                 this.cookies.set('apiToken', backendCharacter.token);

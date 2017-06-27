@@ -7,6 +7,7 @@ import {Stats} from "../../common/entities/stats";
 import {ScoreService} from "../../scoreList/scoreList.service";
 import {Score} from "../../scoreList/scoreList.model";
 import * as commonActions from './../../common/actions/common.actions';
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'scene-end-game',
@@ -14,16 +15,20 @@ import * as commonActions from './../../common/actions/common.actions';
     styleUrls: ['./endGame.component.css'],
     providers: [ScoreService]
 })
-export class EndGameComponent implements OnInit{
+export class EndGameComponent implements OnInit {
     stats: Stats;
 
-    constructor(private store: Store<fromRoot.AppState>, private scoreService: ScoreService) {
+    constructor(private store: Store<fromRoot.AppState>,
+                private scoreService: ScoreService,
+                private router: Router) {
     }
 
     ngOnInit(): void {
 
-
         this.store.select('character').subscribe((state: State) => {
+            if (state.stats.health > 0) {
+                this.router.navigateByUrl('/');
+            }
             this.store.select('common').subscribe((commonState: CommonState) => {
                 if (!this.stats) {
                     this.stats = state.stats;
@@ -33,7 +38,6 @@ export class EndGameComponent implements OnInit{
                     });
                 }
             });
-
         });
     }
 }
