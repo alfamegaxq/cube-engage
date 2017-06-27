@@ -151,3 +151,4 @@ There are still some minor functionalities missing
 - when trying to login by typing username, if the username is wrong, no message is shown
 - Design missing, now only basic bootstrap figures are being displayed
 - find a better solution for `npm install` in Dockerfile. It takes too long. Maybe add base image to dockerhub
+- configure webpack to compile sass
