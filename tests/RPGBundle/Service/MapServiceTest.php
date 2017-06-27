@@ -37,10 +37,23 @@ class MapServiceTest extends TestCase
     }
 
     /** @dataProvider mapDataProvider */
-    public function testGenerateMap(int $level)
+    public function testGenerateMap()
     {
+        $level = 1;
+
+        $playerMock = new Player();
+        $playerMock->setName('name')
+            ->setType(Player::TYPE_RED)
+            ->setToken('123')
+            ->setLevel($level);
+
+        $this->playerServiceMock
+            ->expects($this->once())
+            ->method('getActivePlayer')
+            ->willReturn($playerMock);
+
         $mapService = $this->mockMapService();
-        $map = $mapService->generateMap($level);
+        $map = $mapService->generateMap();
         $this->assertEquals($level, count($map));
         foreach ($map as $row) {
             $this->assertEquals($level, count($row));
