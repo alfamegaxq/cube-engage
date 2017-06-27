@@ -4,13 +4,15 @@ import {AbstractAction} from "../actions/abstract.actions";
 export interface State {
     gameStarted: boolean,
     apiToken: string,
-    endGame: boolean
+    endGame: boolean,
+    scoreList: any
 }
 
 const initialState: State = {
     gameStarted: false,
     apiToken: null,
-    endGame: false
+    endGame: false,
+    scoreList: null
 };
 
 export function reducer(state = initialState, action: AbstractAction): State {
@@ -39,6 +41,27 @@ export function reducer(state = initialState, action: AbstractAction): State {
                 state,
                 {
                     endGame: true
+                }
+            );
+        }
+        case common.CommonActionTypes.SCORE_LIST: {
+            return Object.assign(
+                {},
+                state,
+                {
+                    scoreList: action.payload
+                }
+            );
+        }
+        case common.CommonActionTypes.RESTART: {
+            console.log('RETURNING INITIAL STATE!!!!!!!!!!!!!!!!');
+            console.log(initialState);
+            return Object.assign(
+                {},
+                initialState,
+                {
+                    scoreList: state.scoreList,
+                    gameStarted: true
                 }
             );
         }

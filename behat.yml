@@ -7,3 +7,9 @@ default:
 
   extensions:
     Behat\Symfony2Extension: ~
+    Behat\MinkExtension:
+          base_url:  'nginx'
+          sessions:
+            default:
+              goutte: ~
+

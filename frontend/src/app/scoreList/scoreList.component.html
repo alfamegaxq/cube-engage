@@ -1,0 +1,17 @@
+<h3>Top Score:</h3>
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Name</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let score of scoreList; let i = index">
+            <td>{{i + 1}}.</td>
+            <td>{{score.name}}</td>
+            <td>{{score.score}}</td>
+        </tr>
+    </tbody>
+</table>

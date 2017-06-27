@@ -5,9 +5,8 @@ namespace RPGBehat;
 use AppKernel;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use Behat\Behat\Tester\Exception\PendingException;
+use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\ORM\Tools\SchemaTool;
-use GuzzleHttp\Client;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use RPGBundle\Entity\Player;
@@ -16,9 +15,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context
+class FeatureContext extends RawMinkContext implements Context
 {
-    const URL = 'nginx/app_test.php';
+    const URL = 'http://nginx/app_test.php';
     /** @var ContainerInterface */
     private static $container;
     /** @var array */
@@ -67,19 +66,18 @@ class FeatureContext implements Context
      */
     public function iRequest(string $httpMethod, string $resource)
     {
-        $method = strtolower($httpMethod);
-        $client = new Client();
-        $this->response = $client->request(
-            $method,
+        /** @var \Symfony\Component\BrowserKit\Client $client */
+        $client = $this->getSession()->getDriver()->getClient();
+        $client->request(
+            $httpMethod,
             self::URL . $resource,
+            $this->payload ?: [],
+            [],
             [
-                'form_params' => $this->payload,
-                'headers' => [
-                    'X-Api-Token' => '123'
-                ]
+                'HTTP_X-Api-Token' => '123'
             ]
         );
-
+        $this->response = $client->getResponse();
     }
 
     /**
@@ -87,9 +85,9 @@ class FeatureContext implements Context
      */
     public function theResponseStatusCodeShouldBe(string $httpStatus)
     {
-        if ((string)$this->response->getStatusCode() !== $httpStatus) {
+        if ((string)$this->getSession()->getDriver()->getStatusCode() !== $httpStatus) {
             throw new \Exception('HTTP code does not match ' . $httpStatus .
-                ' (actual: ' . $this->response->getStatusCode() . ')');
+                ' (actual: ' . $this->getSession()->getDriver()->getStatusCode() . ')');
         }
     }
 
@@ -103,27 +101,13 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then table row is:
-     */
-    public function tableRowIs(PyStringNode $string)
-    {
-        $repository = self::$container->get('doctrine')->getManager()->getRepository('RPGBundle:Player');
-        /** @var Player $player */
-        $player = $repository->findAll()[0];
-
-        $expected = json_decode($string->getRaw(), true);
-        Assert::assertEquals($expected['id'], $player->getId());
-        Assert::assertEquals($expected['name'], $player->getName());
-        Assert::assertEquals($expected['type'], $player->getType());
-        Assert::assertNotNull($player->getToken());
-    }
-
-    /**
      * @Then there should be 2d json with :rows rows and :columns columns with cells of numbers
      */
     public function thereShouldBeDJsonWithRowsAndColumnsWithCellsOfNumbers(int $rows, int $columns)
     {
-        $content = json_decode($this->response->getBody()->getContents());
+        $content = $this->getSession()->getDriver()->getClient()->getResponse()->getContent();
+        $content = json_decode($content);
+
         Assert::assertEquals($rows, count($content));
         foreach ($content as $row) {
             Assert::assertEquals($columns, count($row));
@@ -156,7 +140,7 @@ class FeatureContext implements Context
      */
     public function itShouldReturn(PyStringNode $string)
     {
-        $data = $this->response->getBody()->getContents();
+        $data = $this->getSession()->getDriver()->getClient()->getResponse()->getContent();
         Assert::assertJsonStringEqualsJsonString($string->getRaw(), $data);
     }
 
@@ -169,22 +153,80 @@ class FeatureContext implements Context
         $repository = $em->getRepository('RPGBundle:Player');
         /** @var Player $player */
         $player = $repository->findOneBy(['token' => '123']);
-        $player->setSkillPoints($player->getSkillPoints() + 1);
+        $player->setSkillPoints(1);
 
         $em->persist($player);
         $em->flush();
+        $em->detach($player);
     }
 
     /**
-     * @Given /^I should have (\d+) skillpoints$/
+     * @Given /^I am lv (\d+)$/
      */
-    public function iShouldHaveSkillpoints(int $points)
+    public function iAmLv($arg1)
     {
         $em = self::$container->get('doctrine')->getManager();
         $repository = $em->getRepository('RPGBundle:Player');
         /** @var Player $player */
         $player = $repository->findOneBy(['token' => '123']);
+        $player->setLevel($arg1);
 
-        Assert::assertEquals($points, $player->getSkillPoints());
+        $em->persist($player);
+        $em->flush();
+        $em->detach($player);
+    }
+
+    /**
+     * @Given /^I am dead$/
+     */
+    public function iAmDead()
+    {
+        $em = self::$container->get('doctrine')->getManager();
+        $repository = $em->getRepository('RPGBundle:Player');
+        /** @var Player $player */
+        $player = $repository->findOneBy(['token' => '123']);
+        $player->setHealth(0);
+
+        $em->persist($player);
+        $em->flush();
+        $em->detach($player);
+    }
+
+    /**
+     * @Given /^score list should have (\d+) times:$/
+     */
+    public function scoreListShouldHaveTimes($arg1, PyStringNode $string)
+    {
+        $criteria = json_decode($string->getRaw(), true);
+        $repository = self::$container->get('doctrine')->getManager()->getRepository('RPGBundle:Score');
+        $scores = $repository->findBy($criteria);
+
+        Assert::assertEquals($arg1, count($scores));
+    }
+
+    /**
+     * @Given /^table "([^"]*)" row is:$/
+     */
+    public function tableRowIs1($arg1, PyStringNode $string)
+    {
+        $repository = self::$container->get('doctrine')->getManager()->getRepository($arg1);
+        $data = $repository->findAll()[0];
+
+        $expected = json_decode($string->getRaw(), true);
+        foreach ($expected as $key => $value) {
+            $method = 'get'.ucfirst($key);
+            Assert::assertEquals($value, $data->$method());
+        }
+    }
+
+    /**
+     * @Given /^table "([^"]*)" row is empty$/
+     */
+    public function tableRowIsEmpty($arg1)
+    {
+        $repository = self::$container->get('doctrine')->getManager()->getRepository($arg1);
+        $data = $repository->findAll();
+
+        Assert::assertEquals(0, count($data));
     }
 }

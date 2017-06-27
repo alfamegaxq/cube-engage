@@ -14,7 +14,7 @@ class PlayerController extends FOSRestController
     /**
      * @Rest\Get("/ping")
      */
-    public function getPingAction(Request $req): JsonResponse
+    public function getPingAction(): JsonResponse
     {
         return new JsonResponse(['pong']);
     }
@@ -47,7 +47,7 @@ class PlayerController extends FOSRestController
     /**
      * @Rest\Get("/player/{token}")
      */
-    public function getPlayer(Request $request, string $token): Response
+    public function getPlayer(string $token): Response
     {
         $player = $this->getDoctrine()->getRepository('RPGBundle:Player')->findOneBy(['token' => $token]);
         $serializer = $this->get('serializer');
@@ -85,7 +85,6 @@ class PlayerController extends FOSRestController
     {
         $player = $this->get('player.service')->upgradeMultiplier();
         $serializer = $this->get('serializer');
-
         return new Response($serializer->serialize($player, 'json'));
     }
 }

@@ -26,6 +26,10 @@ services:
         class: RPGBundle\Service\MapService
         autowire: true
 
+    score.service:
+        class: RPGBundle\Service\ScoreService
+        autowire: true
+
     map.destroyed_tile.event_listener:
         class: RPGBundle\EventListener\MapTileDestroyedEventListener
         autowire: true

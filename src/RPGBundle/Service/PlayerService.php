@@ -95,4 +95,11 @@ class PlayerService
 
         return $activePlayer;
     }
+
+    public function deletePlayer(): void
+    {
+        $activePlayer = $this->getActivePlayer();
+        $this->em->remove($activePlayer);
+        $this->em->flush();
+    }
 }

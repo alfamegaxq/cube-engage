@@ -41,16 +41,4 @@ class MapController extends FOSRestController
 
         return new JsonResponse($map);
     }
-
-//    /**
-//     * @Rest\Get("/secure/map/complete")
-//     */
-//    public function getMapComplete(Request $request): JsonResponse
-//    {
-//        if ($request->getSession()->has('map')) {
-//            return new JsonResponse(['completed' => false]);
-//        }
-//
-//        return new JsonResponse(['completed' => true]);
-//    }
 }
