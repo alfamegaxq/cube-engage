@@ -3,7 +3,7 @@ Beware that the higher level you have, the stronger cards will be and the more t
 <table>
     <tr *ngFor="let row of map; let i = index">
         <td *ngFor="let cell of row; let j = index" (click)="cellClick(i, j)" [ngClass]="{'red': cell <= 0, 'green': cell > 0}">
-            {{cell}}
+            <!--{{cell}}-->
         </td>
     </tr>
 </table>
