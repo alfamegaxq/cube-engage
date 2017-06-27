@@ -34,6 +34,7 @@ class ScoreService
     public function getTop(): array
     {
         $repository = $this->em->getRepository('RPGBundle:Score');
+
         return $repository->findBy([], ['score' => 'DESC'], Score::TOP_LIST_LENGTH);
     }
 }

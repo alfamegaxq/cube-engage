@@ -23,8 +23,8 @@ class ScoreController extends FOSRestController
         }
 
         $score = $scoreService->getTop();
-
         $serializer = $this->get('serializer');
+
         return new Response($serializer->serialize($score, 'json'));
     }
 
