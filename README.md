@@ -138,3 +138,11 @@ At the end of the game, player is presented with his score and top 10 player sco
 **Problem:** browser console shows `net::ERR_CONNECTION_REFUSED`
 
 **Solution:** your docker crashed. This shouldn't happen on normal scenario
+
+### TODOs
+
+There are still some minor functionalities missing
+
+- when trying to login by typing username, if the username is wrong, no message is shown
+- Design missing, now only basic bootstrap figures are being displayed
+- find a better solution for `npm install` in Dockerfile. It takes too long. Maybe add base image to dockerhub
